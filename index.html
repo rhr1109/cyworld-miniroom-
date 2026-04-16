@@ -127,6 +127,81 @@ body{
 #cy-footer span{color:var(--border)}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);padding:8px 20px;background:var(--txt);color:#FFF;border-radius:6px;font-family:var(--font);font-size:11px;box-shadow:0 4px 12px rgba(0,0,0,0.2);transition:transform 0.3s;z-index:100;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 768px) {
+    body{padding:8px}
+    #cy-wrap{width:100%}
+    #cy-body{flex-direction:column;min-height:auto}
+    #cy-nav{
+        width:100%;min-width:100%;flex-direction:row;
+        border-right:none;border-bottom:1px solid var(--border);
+        padding:6px 4px;gap:0;overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        scrollbar-width:none;
+    }
+    #cy-nav::-webkit-scrollbar{display:none}
+    .nav-profile{display:flex;align-items:center;gap:6px;margin-bottom:0;padding:0 8px;flex-shrink:0}
+    .profile-avatar{width:28px;height:28px;min-width:28px}
+    .profile-name{margin-top:0;font-size:9px}
+    .nav-tab{padding:6px 10px;border-left:none!important;border-bottom:2px solid transparent;white-space:nowrap;font-size:10px}
+    .nav-tab.active{border-bottom-color:var(--cy);background:transparent}
+    .nav-tab:hover{background:transparent}
+    #cy-content{padding:8px;gap:6px;overflow:visible}
+    #status-area{padding:6px 10px}
+    #status-display{font-size:12px}
+    #status-input{font-size:12px;min-width:0}
+    #sug-chips{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+    .sug-chip{flex-shrink:0}
+    #room-row{flex-direction:column}
+    #canvas-box{width:100%;aspect-ratio:3/2}
+    #room-canvas{width:100%;height:100%}
+    #bgm-box{
+        width:100%;min-width:100%;
+        flex-direction:row;flex-wrap:wrap;align-items:center;
+        padding:8px 10px;gap:6px;
+    }
+    .bgm-title{margin-right:4px}
+    #bgm-track-name{margin:0 8px 0 0;flex-shrink:0}
+    .bgm-ctrl{flex-shrink:0}
+    #bgm-volume{width:80px;flex-shrink:0}
+    #bgm-list{flex-direction:row;max-height:none;overflow-x:auto;overflow-y:hidden;flex:1;min-width:0;gap:4px}
+    .bgm-track{white-space:nowrap;flex-shrink:0}
+    #edit-bar{flex-wrap:wrap;gap:4px;padding:5px 6px}
+    .tools-left,.tools-right{gap:2px}
+    .tool-btn,.act-btn{padding:4px 8px;font-size:10px}
+    #info-text{font-size:9px;min-width:0}
+    #item-actions{margin:0;padding:3px 6px;flex-wrap:wrap;gap:3px}
+    #shop-tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    #shop-tabs::-webkit-scrollbar{display:none}
+    .stab{white-space:nowrap;flex-shrink:0;padding:6px 8px;font-size:10px}
+    #shop-grid{gap:4px;padding:4px}
+    .item-card{width:72px;padding:4px 3px}
+    .item-card .thumb{width:56px;height:44px}
+    .item-card .iname{font-size:8px}
+    #cy-footer{padding:6px;font-size:9px;gap:8px}
+}
+@media (max-width: 480px) {
+    body{padding:4px 2px}
+    #cy-titlebar{padding:0 10px;height:34px}
+    .cy-logo{font-size:12px}
+    .cy-title{font-size:11px}
+    .tb-right{font-size:9px}
+    .nav-tab{padding:5px 8px;font-size:9px}
+    #status-row{gap:3px}
+    #status-btn{padding:5px 8px;font-size:10px}
+    .sug-chip{padding:2px 6px;font-size:8px}
+    #edit-bar{padding:4px 5px}
+    .tools-right{margin-left:0}
+    .tool-btn,.act-btn{padding:3px 6px;font-size:9px}
+    #info-text{width:100%;text-align:center;order:10}
+    #item-actions{width:100%;order:10;justify-content:center}
+    #shop-grid{gap:3px;padding:3px}
+    .item-card{width:64px;padding:3px 2px}
+    .item-card .thumb{width:48px;height:40px}
+    #bgm-box{padding:6px 8px}
+    #bgm-volume{width:60px}
+}
 </style>
 </head>
 <body>
@@ -393,6 +468,10 @@ function setupUI(){
     document.getElementById('clear-btn').addEventListener('click',()=>{clearRoom();setParticles(null,0);render();showToast('초기화 완료')});
     // Canvas
     canvas.addEventListener('mousemove',onMove);canvas.addEventListener('mouseleave',onLeave);canvas.addEventListener('click',onClick);
+    // Touch support for mobile
+    canvas.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];onMove({clientX:t.clientX,clientY:t.clientY})},{passive:false});
+    canvas.addEventListener('touchend',e=>{if(e.changedTouches.length){const t=e.changedTouches[0];onClick({clientX:t.clientX,clientY:t.clientY})}hoverTile=null;render()});
+    canvas.addEventListener('touchstart',e=>{e.preventDefault()},{passive:false});
     // Item actions
     document.getElementById('btn-item-move').addEventListener('click',()=>{if(selectedItemIdx<0)return;pendingMoveIdx=selectedItemIdx;info(getAsset(items[selectedItemIdx].assetId).name+' - 이동할 곳을 클릭하세요');updateItemActions()});
     document.getElementById('btn-item-delete').addEventListener('click',()=>{if(selectedItemIdx<0)return;const idx=selectedItemIdx,nm=getAsset(items[idx].assetId).name;removeItem(idx);selectedItemIdx=-1;pendingMoveIdx=-1;updateItemActions();info(nm+' 삭제됨');render()});
