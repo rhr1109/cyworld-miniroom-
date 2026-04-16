@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>싸이월드 미니홈피</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Galmuri11&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="cy-wrap">
+        <div id="cy-frame">
+            <!-- TITLE BAR -->
+            <div id="cy-titlebar">
+                <div class="tb-left">
+                    <span class="cy-logo">cy</span>
+                    <span class="cy-title">나의 미니홈피</span>
+                </div>
+                <div class="tb-right">
+                    TODAY <b>128</b>&nbsp;&nbsp;|&nbsp;&nbsp;TOTAL <b>5,432</b>
+                </div>
+            </div>
+
+            <!-- BODY -->
+            <div id="cy-body">
+                <!-- LEFT NAV -->
+                <nav id="cy-nav">
+                    <div class="nav-profile">
+                        <div class="profile-avatar" id="nav-avatar"></div>
+                    </div>
+                    <a class="nav-tab active">미니룸</a>
+                    <a class="nav-tab disabled">사진첩</a>
+                    <a class="nav-tab disabled">다이어리</a>
+                    <a class="nav-tab disabled">방명록</a>
+                </nav>
+
+                <!-- CONTENT -->
+                <div id="cy-content">
+                    <!-- ROOM + BGM -->
+                    <div id="room-row">
+                        <div id="canvas-box">
+                            <canvas id="room-canvas"></canvas>
+                        </div>
+                        <div id="bgm-box">
+                            <div class="bgm-title">♪ BGM</div>
+                            <div id="bgm-track-name">봄날의 오후</div>
+                            <div class="bgm-ctrl">
+                                <button id="bgm-prev" class="bgm-btn">◀◀</button>
+                                <button id="bgm-play" class="bgm-btn play">▶</button>
+                                <button id="bgm-next" class="bgm-btn">▶▶</button>
+                            </div>
+                            <input type="range" id="bgm-volume" min="0" max="100" value="40">
+                            <div id="bgm-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- TOOLBAR -->
+                    <div id="edit-bar">
+                        <div class="tools-left">
+                            <button class="tool-btn active" data-tool="place">배치</button>
+                            <button class="tool-btn" data-tool="select">이동</button>
+                            <button class="tool-btn" data-tool="delete">삭제</button>
+                        </div>
+                        <span id="info-text">아이템을 선택해서 배치하세요 (방 안의 가구를 클릭하면 편집할 수 있어요)</span>
+                        <div id="item-actions" style="display:none">
+                            <span id="item-actions-name"></span>
+                            <button class="act-btn sel-btn" id="btn-item-move">이동</button>
+                            <button class="act-btn sel-btn" id="btn-item-delete">삭제</button>
+                            <button class="act-btn sel-btn" id="btn-item-cancel">취소</button>
+                        </div>
+                        <div class="tools-right">
+                            <button id="save-btn" class="act-btn">저장</button>
+                            <button id="clear-btn" class="act-btn">초기화</button>
+                        </div>
+                    </div>
+
+                    <!-- ITEM SHOP -->
+                    <div id="shop">
+                        <div id="shop-tabs">
+                            <button class="stab active" data-cat="furniture">가구</button>
+                            <button class="stab" data-cat="electronics">가전</button>
+                            <button class="stab" data-cat="deco">소품</button>
+                            <button class="stab" data-cat="character">캐릭터</button>
+                            <span class="stab-sep"></span>
+                            <button class="stab" data-cat="wallpaper">벽지</button>
+                            <button class="stab" data-cat="floor">바닥</button>
+                            <span class="stab-sep"></span>
+                            <button class="stab" data-cat="hair">헤어</button>
+                            <button class="stab" data-cat="top">상의</button>
+                            <button class="stab" data-cat="bottom">하의</button>
+                            <button class="stab" data-cat="shoes">신발</button>
+                        </div>
+                        <div id="shop-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div id="cy-footer">
+                <a>파도타기</a><span>|</span>
+                <a>일촌신청</a><span>|</span>
+                <a>일촌평 보기</a>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
