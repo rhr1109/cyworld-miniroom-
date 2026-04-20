@@ -1,3 +1,15 @@
 .playwright-mcp/
 .claude/
 node_modules/
+check-*.png
+check?.png
+*.b64.txt
+minimi-zoom.png
+slim-zoom.png
+mobile-*.png
+tablet-*.png
+desktop-*.png
+default-theme.png
+minihompy.webp
+minimi*.jpg
+miniroom*.jpg
