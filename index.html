@@ -390,7 +390,7 @@ body{
     #bgm-list,#bgm-volume{display:none}
     .room-wrap{padding:8px 10px}
     .room-title-row{padding:4px 0}
-    #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:768/428;min-height:200px}
+    #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:576/428;min-height:200px}
     #edit-bar{flex-wrap:wrap;gap:5px;padding:6px 8px}
     #shop{max-height:none;min-height:auto;flex:0 0 auto}
     #stat-bars{flex-direction:row;flex-wrap:wrap;gap:6px 12px;padding:8px 10px}
@@ -443,7 +443,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-wide-items TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-classic-room TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -601,7 +601,7 @@ body{
 (()=>{
 'use strict';
 
-const TW=48,TH=24,GRID=12,WALL_H=140,CW=768,CH=428,OX=384,OY=140,FS=44/64;
+const TW=48,TH=24,GRID=12,WALL_H=140,CW=576,CH=428,OX=288,OY=140,FS=44/64;
 const P={floor1:'#EDE0CA',floor2:'#E0D2B8',floorEdge:'#D0C0A8',wallBack:'#FFF5F0',wallLeft:'#FFEDE5',wallLine:'rgba(255,160,130,0.18)',baseboard:'#D4A574',baseboardS:'#C08A5A',shadow:'rgba(80,40,20,0.06)',hover:'rgba(255,255,255,0.4)',valid:'rgba(120,255,160,0.35)',invalid:'rgba(255,100,100,0.3)',select:'rgba(255,62,108,0.35)'};
 
 // ===== SPRITE SYSTEM (24x40 - widened for pigtail extras room) =====
@@ -795,47 +795,56 @@ const ASSETS=[
   drawIsoBox(cx,fx-22,fy-26,22,3,18,'#B86F92','#985778','#7A4562','rgba(0,0,0,0.2)');
 }},
 {id:'bookshelf',name:'책장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){
-  // cabinet body (64 deep × 32 wide × 56 tall)
-  drawIsoBox(cx,fx,fy,64,32,56,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
-  // bottom shelf books (inside cabinet at u≈0.2, v≈0.1, base at y_rel≈-8)
-  drawIsoBox(cx,fx+10,fy-8,20,24,14,'#E53935','#C62828','#B71C1C','rgba(0,0,0,0.1)');
-  // middle shelf divider plank
-  drawIsoBox(cx,fx,fy-22,62,30,2,'#A08258','#806540','#604830');
-  // middle shelf books (base at y_rel=-24)
-  drawIsoBox(cx,fx+10,fy-24,20,24,14,'#1E88E5','#1565C0','#0D47A1','rgba(0,0,0,0.1)');
-  // top shelf divider plank
-  drawIsoBox(cx,fx,fy-38,62,30,2,'#A08258','#806540','#604830');
-  // top shelf books (base at y_rel=-40)
-  drawIsoBox(cx,fx+10,fy-40,20,24,14,'#43A047','#2E7D32','#1B5E20','rgba(0,0,0,0.1)');
+  // cabinet outer shell — tall thin box (gw=1 wide, gd=2 deep)
+  drawIsoBox(cx,fx,fy,48,24,56,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
+  // front opening (darker recessed interior)
+  drawIsoBox(cx,fx-3,fy-4,42,4,50,'#3A2A1A','#2A1A10','#1A0A00');
+  // horizontal shelf planks (3 shelves visible through opening)
+  drawIsoBox(cx,fx-3,fy-18,42,4,2,'#A08258','#806540','#604830');
+  drawIsoBox(cx,fx-3,fy-34,42,4,2,'#A08258','#806540','#604830');
+  drawIsoBox(cx,fx-3,fy-50,42,4,2,'#A08258','#806540','#604830');
+  // books on bottom shelf (row of colored spines)
+  drawIsoBox(cx,fx+6,fy-4,5,4,12,'#E53935','#C62828','#B71C1C');
+  drawIsoBox(cx,fx+16,fy-9,5,4,14,'#1E88E5','#1565C0','#0D47A1');
+  drawIsoBox(cx,fx+26,fy-14,5,4,11,'#43A047','#2E7D32','#1B5E20');
+  // books on middle shelf
+  drawIsoBox(cx,fx+6,fy-20,5,4,12,'#FFB300','#FF8F00','#E65100');
+  drawIsoBox(cx,fx+16,fy-25,5,4,13,'#F8BBD0','#F06292','#EC407A');
+  drawIsoBox(cx,fx+26,fy-30,5,4,10,'#26C6DA','#00ACC1','#006064');
+  // books on top shelf
+  drawIsoBox(cx,fx+8,fy-37,6,4,10,'#7E57C2','#5E35B1','#4527A0');
+  drawIsoBox(cx,fx+18,fy-42,5,4,12,'#8D6E63','#6D4C41','#4E342E');
+  drawIsoBox(cx,fx+28,fy-47,5,4,9,'#FFD54F','#FFC107','#FF8F00');
 }},
 {id:'sofa',name:'소파',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
-  // sofa body (32 deep × 64 wide × 10 tall)
-  drawIsoBox(cx,fx,fy,32,64,10,'#6B8F85','#5B7F75','#4A6E65','rgba(0,0,0,0.15)');
-  // backrest — tall panel at back-left edge of body top, spans sofa width
-  drawIsoBox(cx,fx,fy-10,32,6,18,'#98D8C8','#80C8B0','#70B8A0','rgba(0,0,0,0.12)');
-  // left armrest (at head end — far lw corner)
-  drawIsoBox(cx,fx-58,fy-19,4,6,14,'#98D8C8','#80C8B0','#70B8A0');
-  // right armrest (at foot end — front)
-  drawIsoBox(cx,fx,fy-3,4,6,14,'#98D8C8','#80C8B0','#70B8A0');
-  // seat cushion on top of body
-  drawIsoBox(cx,fx-4,fy-10,26,54,3,'#A8E0D0','#88C8B8','#78B8A8','rgba(0,0,0,0.08)');
-  // seat division (subtle line between 2 cushions)
-  drawIsoBox(cx,fx-30,fy-23,26,2,3,'#78B8A8','#68A898','#588898');
+  // sofa body (base, 32 deep × 64 wide × 8 tall)
+  drawIsoBox(cx,fx,fy,32,64,8,'#5B7F75','#4A6E65','#395D55','rgba(0,0,0,0.15)');
+  // backrest — along the entire back edge (lw direction), behind the seat
+  drawIsoBox(cx,fx-58,fy-37,28,6,20,'#88C8B8','#78B8A8','#68A898','rgba(0,0,0,0.12)');
+  // left armrest (head end, far lw)
+  drawIsoBox(cx,fx-58,fy-21,6,6,12,'#98D8C8','#80C8B0','#70B8A0');
+  // right armrest (foot end, front)
+  drawIsoBox(cx,fx,fy-5,6,6,12,'#98D8C8','#80C8B0','#70B8A0');
+  // seat cushion — large pillow filling seating area (inset from armrests)
+  drawIsoBox(cx,fx-6,fy-8,22,46,5,'#A8E0D0','#88C8B8','#78B8A8','rgba(0,0,0,0.08)');
+  // cushion seam (fine vertical line dividing 2 cushions)
+  drawIsoBox(cx,fx-28,fy-19,22,1,5,'#78B8A8','#68A898','#588898');
 }},
 {id:'wardrobe',name:'옷장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){
-  // main body
-  drawIsoBox(cx,fx,fy,64,32,62,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
-  // top decorative trim
-  drawIsoBox(cx,fx,fy-62,64,32,3,'#A08258','#806540','#604830');
-  // left door line (vertical line on left face at midpoint)
-  drawIsoBox(cx,fx+1,fy-2,62,1,58,'#604830','#4A3A27','#3A2A17');
-  // right door line
-  drawIsoBox(cx,fx+1,fy-2,1,30,58,'#604830','#4A3A27','#3A2A17');
-  // door handles (2 brass knobs)
-  drawIsoBox(cx,fx+1,fy-26,1,2,2,'#DAA520','#B8860B','#997307');
-  drawIsoBox(cx,fx+32,fy-42,1,2,2,'#DAA520','#B8860B','#997307');
-  // mirror on door
-  drawIsoBox(cx,fx+2,fy-14,1,24,30,'#E0F0F5','#C5DEE8','#AACADC');
+  // cabinet body (gw=1 → lw=24, gd=2 → rw=48)
+  drawIsoBox(cx,fx,fy,48,24,60,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
+  // top crown molding
+  drawIsoBox(cx,fx+1,fy-60,46,22,4,'#A08258','#806540','#604830');
+  // left-door panel (inset, lighter shade)
+  drawIsoBox(cx,fx+1,fy-2,22,22,56,'#A0845A','#806540','#604830');
+  // right-door panel
+  drawIsoBox(cx,fx+25,fy-14,22,22,56,'#A0845A','#806540','#604830');
+  // door seam between the 2 doors (dark vertical line on right face)
+  drawIsoBox(cx,fx+23,fy-11,2,22,56,'#4A3525','#3A2515','#2A1A05');
+  // left door handle (brass knob)
+  drawIsoBox(cx,fx+18,fy-28,1,2,2,'#DAA520','#B8860B','#997307');
+  // right door handle
+  drawIsoBox(cx,fx+28,fy-33,1,2,2,'#DAA520','#B8860B','#997307');
 }},
 {id:'table',name:'탁자',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){
   // pedestal base (wide disk)
@@ -1077,14 +1086,14 @@ function updateParticles(){particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life++;if
 function drawParticles(cx){particles.forEach(p=>{const a=p.alpha*(0.5+0.5*Math.sin(p.life*0.05));cx.globalAlpha=a;if(p.type==='sparkle'){cx.fillStyle='#FFD700';cx.fillRect(p.x,p.y-2,1,1);cx.fillRect(p.x-2,p.y,5,1);cx.fillRect(p.x-1,p.y+1,3,1);cx.fillRect(p.x,p.y+2,1,1)}else if(p.type==='heart'){drawHeart(cx,p.x,p.y,'#FF69B4')}else if(p.type==='rain'){cx.strokeStyle='rgba(120,160,220,0.5)';cx.lineWidth=1;cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(p.x+1,p.y+8);cx.stroke()}else if(p.type==='snow'){cx.fillStyle='#FFF';cx.beginPath();cx.arc(p.x,p.y,p.size/2,0,Math.PI*2);cx.fill()}cx.globalAlpha=1})}
 
 // ===== RENDERING =====
-function drawWalls(cx){const wp=WALLPAPERS[room.wallpaper],tl=toScreen(0,0),tr=toScreen(GRID,0),bl=toScreen(0,GRID);const backSlope=(tr.y-tl.y)/(tr.x-tl.x),leftSlope=(bl.y-tl.y)/(bl.x-tl.x);cx.save();cx.beginPath();cx.moveTo(tl.x,0);cx.lineTo(CW,0);cx.lineTo(tr.x,tr.y);cx.lineTo(tl.x,tl.y);cx.closePath();cx.clip();cx.fillStyle=wp.back;cx.fillRect(tl.x-10,-10,CW-tl.x+20,tr.y+20);fillWallPattern(cx,wp,tl.x-10,0,CW-tl.x+20,tr.y,backSlope);cx.restore();cx.save();cx.beginPath();cx.moveTo(tl.x,0);cx.lineTo(tl.x,tl.y);cx.lineTo(bl.x,bl.y);cx.lineTo(0,0);cx.closePath();cx.clip();cx.fillStyle=wp.left;cx.fillRect(-10,-10,tl.x+20,bl.y+20);fillWallPattern(cx,wp,-10,0,tl.x+20,bl.y,leftSlope);cx.restore();cx.fillStyle=P.baseboard;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(tr.x,tr.y-10);cx.lineTo(tl.x,tl.y-10);cx.closePath();cx.fill();cx.fillStyle=P.baseboardS;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(bl.x,bl.y);cx.lineTo(bl.x,bl.y-10);cx.lineTo(tl.x,tl.y-10);cx.closePath();cx.fill();cx.strokeStyle='rgba(0,0,0,0.08)';cx.lineWidth=1;cx.beginPath();cx.moveTo(tl.x,0);cx.lineTo(tl.x,tl.y);cx.stroke();drawWindow(cx,tl,tr)}
+function drawWalls(cx){const wp=WALLPAPERS[room.wallpaper],tl=toScreen(0,0),tr=toScreen(GRID,0),bl=toScreen(0,GRID);const backSlope=(tr.y-tl.y)/(tr.x-tl.x),leftSlope=(bl.y-tl.y)/(bl.x-tl.x);cx.save();cx.beginPath();cx.moveTo(tl.x,tl.y-WALL_H);cx.lineTo(tr.x,tr.y-WALL_H);cx.lineTo(tr.x,tr.y);cx.lineTo(tl.x,tl.y);cx.closePath();cx.clip();cx.fillStyle=wp.back;cx.fillRect(tl.x-10,tl.y-WALL_H-10,tr.x-tl.x+20,WALL_H+20);fillWallPattern(cx,wp,tl.x-10,tl.y-WALL_H,tr.x-tl.x+20,WALL_H,backSlope);cx.restore();cx.save();cx.beginPath();cx.moveTo(tl.x,tl.y-WALL_H);cx.lineTo(tl.x,tl.y);cx.lineTo(bl.x,bl.y);cx.lineTo(bl.x,bl.y-WALL_H);cx.closePath();cx.clip();cx.fillStyle=wp.left;cx.fillRect(bl.x-10,tl.y-WALL_H-10,tl.x-bl.x+20,WALL_H+bl.y-tl.y+20);fillWallPattern(cx,wp,bl.x-10,tl.y-WALL_H,tl.x-bl.x+20,WALL_H+bl.y-tl.y,leftSlope);cx.restore();cx.fillStyle=P.baseboard;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(tr.x,tr.y-10);cx.lineTo(tl.x,tl.y-10);cx.closePath();cx.fill();cx.fillStyle=P.baseboardS;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(bl.x,bl.y);cx.lineTo(bl.x,bl.y-10);cx.lineTo(tl.x,tl.y-10);cx.closePath();cx.fill();cx.strokeStyle='rgba(0,0,0,0.08)';cx.lineWidth=1;cx.beginPath();cx.moveTo(tl.x,tl.y-WALL_H);cx.lineTo(tl.x,tl.y);cx.stroke();drawWindow(cx,tl,tr)}
 function drawWindow(cx,tl,tr){const t=0.58,vt=0.55,hw=28,hh=22,slope=(tr.y-tl.y)/(tr.x-tl.x),cxw=tl.x+t*(tr.x-tl.x),cyw=tl.y+t*(tr.y-tl.y)-WALL_H*vt;const TL={x:cxw-hw,y:cyw-hw*slope-hh},TR={x:cxw+hw,y:cyw+hw*slope-hh},BR={x:cxw+hw,y:cyw+hw*slope+hh},BL={x:cxw-hw,y:cyw-hw*slope+hh};const fw=3,fh=3;const FTL={x:TL.x-fw,y:TL.y-fw*slope-fh},FTR={x:TR.x+fw,y:TR.y+fw*slope-fh},FBR={x:BR.x+fw,y:BR.y+fw*slope+fh},FBL={x:BL.x-fw,y:BL.y-fw*slope+fh};cx.fillStyle='#8B6F47';cx.beginPath();cx.moveTo(FTL.x,FTL.y);cx.lineTo(FTR.x,FTR.y);cx.lineTo(FBR.x,FBR.y);cx.lineTo(FBL.x,FBL.y);cx.closePath();cx.fill();const grad=cx.createLinearGradient(TL.x,TL.y,BL.x,BL.y);grad.addColorStop(0,'#B8E0FF');grad.addColorStop(0.6,'#D8EFFF');grad.addColorStop(1,'#FFE8B8');cx.fillStyle=grad;cx.beginPath();cx.moveTo(TL.x,TL.y);cx.lineTo(TR.x,TR.y);cx.lineTo(BR.x,BR.y);cx.lineTo(BL.x,BL.y);cx.closePath();cx.fill();const midX=(TL.x+TR.x)/2,midY=(TL.y+TR.y)/2+hh*0.3;cx.fillStyle='#FFD580';cx.beginPath();cx.arc(midX+hw*0.4,midY-hh*0.3,6,0,Math.PI*2);cx.fill();cx.fillStyle='rgba(255,255,255,0.8)';cx.beginPath();cx.arc(midX-hw*0.3,midY+2,4,0,Math.PI*2);cx.arc(midX-hw*0.1,midY,5,0,Math.PI*2);cx.arc(midX+hw*0.1,midY+1,4,0,Math.PI*2);cx.fill();cx.strokeStyle='#FFF';cx.lineWidth=2;cx.lineCap='square';cx.beginPath();cx.moveTo(cxw,cyw-hh);cx.lineTo(cxw,cyw+hh);cx.stroke();cx.beginPath();cx.moveTo(cxw-hw,cyw-hw*slope);cx.lineTo(cxw+hw,cyw+hw*slope);cx.stroke();cx.strokeStyle='#FFF';cx.lineWidth=2;cx.beginPath();cx.moveTo(TL.x,TL.y);cx.lineTo(TR.x,TR.y);cx.lineTo(BR.x,BR.y);cx.lineTo(BL.x,BL.y);cx.closePath();cx.stroke();cx.strokeStyle='#5D4B32';cx.lineWidth=1;cx.beginPath();cx.moveTo(FTL.x,FTL.y);cx.lineTo(FTR.x,FTR.y);cx.lineTo(FBR.x,FBR.y);cx.lineTo(FBL.x,FBL.y);cx.closePath();cx.stroke();cx.fillStyle='#A87850';cx.beginPath();cx.moveTo(FBL.x-2,FBL.y-2*slope);cx.lineTo(FBR.x+2,FBR.y+2*slope);cx.lineTo(FBR.x+2,FBR.y+2*slope+4);cx.lineTo(FBL.x-2,FBL.y-2*slope+4);cx.closePath();cx.fill();cx.strokeStyle='#5D4B32';cx.lineWidth=0.5;cx.stroke()}
-function drawFloor(cx){const fl=FLOORS[room.floor];const tl=toScreen(0,0),tr=toScreen(GRID,0),br=toScreen(GRID,GRID),bl=toScreen(0,GRID);cx.fillStyle=fl.c1;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(CW,CH);cx.lineTo(0,CH);cx.lineTo(bl.x,bl.y);cx.closePath();cx.fill();cx.save();cx.clip();cx.fillStyle=fl.c2;const minX=0,minY=tl.y,w=CW,h=CH-tl.y;for(let i=0;i<200;i++){const px=Math.floor(minX+((i*137)%1000)/1000*w),py=Math.floor(minY+((i*91+i*i*7)%1000)/1000*h);cx.fillRect(px,py,1,1)}cx.restore()}
+function drawFloor(cx){const fl=FLOORS[room.floor];const tl=toScreen(0,0),tr=toScreen(GRID,0),br=toScreen(GRID,GRID),bl=toScreen(0,GRID);cx.fillStyle=fl.c1;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(br.x,br.y);cx.lineTo(bl.x,bl.y);cx.closePath();cx.fill();cx.save();cx.clip();cx.fillStyle=fl.c2;const minX=Math.min(tl.x,bl.x),minY=tl.y,w=tr.x-bl.x,h=bl.y-tl.y;for(let i=0;i<180;i++){const px=Math.floor(minX+((i*137)%1000)/1000*w),py=Math.floor(minY+((i*91+i*i*7)%1000)/1000*h);cx.fillRect(px,py,1,1)}cx.restore()}
 function drawHighlight(cx,col,row,gw,gd,color){for(let dc=0;dc<gw;dc++)for(let dr=0;dr<gd;dr++){const s=toScreen(col+dc,row+dr);drawFloorDiamond(cx,s.x,s.y,color,null)}}
 function itemPos(it){if(it.walk){const t=it.walk.t;return{col:it.walk.srcCol+(it.col-it.walk.srcCol)*t,row:it.walk.srcRow+(it.row-it.walk.srcRow)*t}}return{col:it.col,row:it.row}}
 function drawItems(cx){const arr=items.map((it,i)=>{const p=itemPos(it);return{...it,idx:i,_col:p.col,_row:p.row}}).sort((a,b)=>(a._col+a._row)-(b._col+b._row)||a._row-b._row);arr.forEach(it=>{const a=getAsset(it.assetId);if(!a)return;const fc=frontCorner(it._col,it._row,a.gw,a.gd);let bobY=0;if(a.cat==='character'){if(it.walk)bobY=animTick%2===0?0:-2;else bobY=(Math.floor(animTick/4)%2===0)?0:-1}const flipH=it.flip?-1:1;if(a.cat==='character'){cx.save();cx.fillStyle='rgba(40,20,10,0.22)';cx.beginPath();cx.ellipse(fc.x,fc.y-TH/2+6,9,2.5,0,0,Math.PI*2);cx.fill();cx.restore();if(flipH<0){cx.save();cx.translate(fc.x*2,0);cx.scale(-1,1);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}else a.draw(cx,fc.x,fc.y+bobY)}else{drawShadow(cx,fc.x,fc.y,a.gd*TW/2,a.gw*TW/2);cx.save();cx.translate(fc.x,fc.y);cx.scale(FS*flipH,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}if(it.idx===selectedItemIdx)drawHighlight(cx,it.col,it.row,a.gw,a.gd,P.select)})}
 function drawHoverPreview(cx){if(!hoverTile||!inGrid(hoverTile.col,hoverTile.row))return;if(tool==='place'&&selectedAssetId){const a=getAsset(selectedAssetId);if(!a)return;const v=canPlace(hoverTile.col,hoverTile.row,a.gw,a.gd,-1,a);drawHighlight(cx,hoverTile.col,hoverTile.row,a.gw,a.gd,v?P.valid:P.invalid);if(v){const fc=frontCorner(hoverTile.col,hoverTile.row,a.gw,a.gd);cx.globalAlpha=0.5;if(a.cat==='character'){a.draw(cx,fc.x,fc.y)}else{cx.save();cx.translate(fc.x,fc.y);cx.scale(FS,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y);cx.restore()}cx.globalAlpha=1}}else{const idx=getItemAt(hoverTile.col,hoverTile.row);if(idx>=0){const it=items[idx],a=getAsset(it.assetId);drawHighlight(cx,it.col,it.row,a.gw,a.gd,tool==='delete'?P.invalid:P.hover)}}}
-function render(){ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,CW,CH);const wp=WALLPAPERS[room.wallpaper];const g=ctx.createLinearGradient(0,0,0,CH);g.addColorStop(0,wp.back);g.addColorStop(1,wp.left);ctx.fillStyle=g;ctx.fillRect(0,0,CW,CH);drawWalls(ctx);drawFloor(ctx);drawHoverPreview(ctx);drawItems(ctx);drawParticles(ctx)}
+function render(){ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,CW,CH);const wp=WALLPAPERS[room.wallpaper],fl=FLOORS[room.floor],tl=toScreen(0,0);const g=ctx.createLinearGradient(0,0,0,CH);g.addColorStop(0,wp.back);const splitY=tl.y/CH;g.addColorStop(splitY,wp.left);g.addColorStop(splitY,fl.c1);g.addColorStop(1,fl.c2);ctx.fillStyle=g;ctx.fillRect(0,0,CW,CH);drawWalls(ctx);drawFloor(ctx);drawHoverPreview(ctx);drawItems(ctx);drawParticles(ctx)}
 function resize(){if(!canvas)return;canvas.width=CW;canvas.height=CH;canvas._mobile=window.innerWidth<900;const box=document.getElementById('canvas-box');const parent=box.parentElement;const pcs=getComputedStyle(parent);const pw=parent.clientWidth-parseFloat(pcs.paddingLeft)-parseFloat(pcs.paddingRight);let availH=parent.clientHeight-parseFloat(pcs.paddingTop)-parseFloat(pcs.paddingBottom);Array.from(parent.children).forEach(sib=>{if(sib===box||getComputedStyle(sib).display==='none')return;availH-=sib.offsetHeight});const gap=parseFloat(pcs.gap)||0;const vis=Array.from(parent.children).filter(c=>getComputedStyle(c).display!=='none').length;availH-=gap*Math.max(0,vis-1);availH=Math.max(100,availH);const aspect=CW/CH;let w=pw,h=w/aspect;if(h>availH){h=availH;w=h*aspect}box.style.flex='none';box.style.width=Math.floor(w)+'px';box.style.height=Math.floor(h)+'px';canvas.style.width='100%';canvas.style.height='100%';ctx.imageSmoothingEnabled=false;render()}
 
 // ===== ITEM MANAGEMENT =====
