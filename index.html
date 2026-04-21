@@ -435,7 +435,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-stats-renamed TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-minimi-polish TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -582,12 +582,12 @@ const CHAR_BASE=[
 '........................',  //  0 (flatter hair - empty top)
 '........................',  //  1 (empty)
 '........HHHHHHHH........',  //  2 hair crown
-'......HHHHHHHHHHHH......',  //  3 hair widening
+'......HHyHHHHHHyHH......',  //  3 hair widening + shadow accents
 '.....HHHhhhhhhhhHHH.....',  //  4 hair with highlight
 '.....HHHHHHHHHHHHHH.....',  //  5
-'.....HHHHHHHHHHHHHH.....',  //  6
-'....HHHSSSSSSSSSSHHH....',  //  7 face top + side hair
-'....HHSSSSSSSSSSSSHH....',  //  8 face widening
+'.....HyHHHHHHHHHHyH.....',  //  6 edge shadow
+'....HyHSSSSSSSSSSHyH....',  //  7 face top + hair-face shadow
+'....HySSSSSSSSSSSSyH....',  //  8 face widening + shadow
 '....HSSSSSSSSSSSSSSH....',  //  9 forehead
 '....HSSSyyySSyyySSSH....',  // 10 eyebrows
 '....HSSEEESSSSEEESSH....',  // 11 eye tops
@@ -599,25 +599,25 @@ const CHAR_BASE=[
 '.......SSSSSSSSSS.......',  // 17 chin
 '........SSSSSSSS........',  // 18 jaw narrow
 '..........cccc..........',  // 19 neck
-'........TTTTTTTT........',  // 20 shoulders (8)
-'......a.TTTTTTTT.a......',  // 21 chest + arms
+'........TuuccuuT........',  // 20 shoulders with highlights + V-collar
+'......a.TuTTTTuT.a......',  // 21 chest + arms + shoulder highlights
 '......a.TTTTTTTT.a......',  // 22 chest
 '......a.TTTTTTTT.a......',  // 23 chest
 '......a.tttttttt.a......',  // 24 shirt bottom hemline (shade)
-'.......a.TTTTTT.a.......',  // 25 torso narrowing
+'.......a.TuTTuT.a.......',  // 25 torso narrowing + subtle highlights
 '.......a.tttttt.a.......',  // 26 waist hemline (shade)
-'........BBBBBBBB........',  // 27 hip/pants (8 uniform)
-'........BBBBBBBB........',  // 28 pants
-'........BBBBBBBB........',  // 29 pants
+'........BBBBBBBB........',  // 27 hip/pants (waistband)
+'........BpBBBBpB........',  // 28 thigh highlights
+'........BpBBBBpB........',  // 29 thigh highlights
 '........BBBBBBBB........',  // 30 pants
-'........BBB..BBB........',  // 31 leg split
-'........BBB..BBB........',  // 32 legs
+'........BpB..BpB........',  // 31 leg split + highlights
+'........BpB..BpB........',  // 32 legs + highlights
 '........BBB..BBB........',  // 33 legs
 '........BBB..BBB........',  // 34 legs
 '........BBB..BBB........',  // 35 legs
-'........bbb..bbb........',  // 36 leg bottom (shade)
-'........bbb..bbb........',  // 37 leg bottom (shade)
-'.......FFFF..FFFF.......',  // 38 shoes
+'........bbb..bbb........',  // 36 leg bottom (shade cuff)
+'........bbb..bbb........',  // 37 leg bottom (shade cuff)
+'.......gFFF..FFFg.......',  // 38 shoes with toe highlight
 '.......ffff..ffff.......',  // 39 shoe front (shade)
 ];
 // Long hair extras drawn before main sprite (col 0/11 edges)
@@ -666,7 +666,7 @@ function getEquipped(){return{hair:HAIR_ITEMS[outfit.hair],top:TOP_ITEMS[outfit.
 function drawCharSprite(cx,centerX,bottomY,outfitOverride,pxSize){
     const px=pxSize||CPX,eq=outfitOverride||getEquipped(),W=24,H=40,ox=Math.round(centerX-W*px/2),oy=Math.round(bottomY-H*px);
     const hairH=shadeHex(eq.hair.c,1.28),hairD=shadeHex(eq.hair.c,0.6);
-    const cm={'H':eq.hair.c,'h':hairH,'y':hairD,'S':'#FFE0CB','E':'#2C1810','W':'#FFFFFF','M':'#E8636B','R':'#FF9BA8','N':'#D8A080','n':'#E8C0A0','T':eq.top.c,'t':eq.top.s||shadeHex(eq.top.c,0.78),'c':'#FFE0CB','a':'#FFE0CB','B':eq.bottom.c,'b':eq.bottom.s||shadeHex(eq.bottom.c,0.78),'F':eq.shoes.c,'f':shadeHex(eq.shoes.c,0.78)};
+    const cm={'H':eq.hair.c,'h':hairH,'y':hairD,'S':'#FFE0CB','E':'#2C1810','W':'#FFFFFF','M':'#E8636B','R':'#FF9BA8','N':'#D8A080','n':'#E8C0A0','T':eq.top.c,'t':eq.top.s||shadeHex(eq.top.c,0.78),'u':shadeHex(eq.top.c,1.12),'c':'#FFE0CB','a':'#FFE0CB','B':eq.bottom.c,'b':eq.bottom.s||shadeHex(eq.bottom.c,0.78),'p':shadeHex(eq.bottom.c,1.18),'F':eq.shoes.c,'f':shadeHex(eq.shoes.c,0.78),'g':shadeHex(eq.shoes.c,1.18)};
     [eq.top,eq.bottom,eq.shoes].forEach(it=>{if(it.xc)Object.assign(cm,it.xc)});
     const rows=[...CHAR_BASE];[eq.hair,eq.top,eq.bottom,eq.shoes].forEach(it=>{if(it.rows)Object.entries(it.rows).forEach(([r,s])=>{if(s)rows[r]=s})});
     // Build pixel grid + extra pixels beyond sprite bounds
