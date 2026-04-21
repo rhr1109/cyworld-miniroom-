@@ -295,6 +295,48 @@ body{
 .right-footer a{color:var(--pink-d);cursor:pointer;text-decoration:none}
 .right-footer a:hover{text-decoration:underline}
 
+/* WAVE (파도타기 bar) */
+#wave-bar{
+    position:fixed;bottom:12px;left:12px;z-index:90;
+    background:rgba(255,255,255,0.95);border:2px solid var(--pink-l);
+    border-radius:10px;padding:8px 10px;
+    box-shadow:0 4px 14px rgba(200,90,30,0.2);
+    max-width:340px;
+}
+.wave-title{font-size:11px;color:var(--pink-d);font-weight:700;margin-bottom:6px;letter-spacing:0.5px}
+.wave-friends{display:flex;gap:8px;align-items:center}
+.wave-friend{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    cursor:pointer;padding:2px 4px;border-radius:6px;transition:all 0.15s;
+    min-width:42px;
+}
+.wave-friend:hover{background:var(--pink-bg);transform:translateY(-2px)}
+.wave-avatar{
+    width:32px;height:32px;border:2px solid var(--pink);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:18px;
+    background:#FFF8F0;
+}
+.wave-friend-name{font-size:9px;color:var(--txt);font-weight:600;white-space:nowrap}
+.wave-dropdown{display:none}
+@media (max-width:900px){
+    #wave-bar{
+        position:fixed;bottom:0;left:0;right:0;max-width:none;
+        border-radius:12px 12px 0 0;border-bottom:0;
+        padding:8px 14px;display:flex;align-items:center;gap:10px;
+    }
+    .wave-title{font-size:12px;margin-bottom:0;white-space:nowrap;flex-shrink:0}
+    .wave-friends{display:none}
+    .wave-dropdown{
+        display:block;flex:1;min-width:0;padding:8px 10px;
+        border:1px solid var(--pink-l);border-radius:6px;
+        font-family:var(--font);font-size:13px;color:var(--txt);
+        background:#FFF;cursor:pointer;outline:none;
+    }
+    .wave-dropdown:focus{border-color:var(--pink)}
+    /* bottom padding so content not hidden behind wave bar */
+    #cy-right{padding-bottom:72px}
+}
+
 /* TOAST */
 .toast{
     position:fixed;bottom:24px;left:50%;
@@ -393,7 +435,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-zoom-1.5 TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-wave-added TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -516,6 +558,14 @@ body{
             <a>일촌평 보기</a>
         </div>
     </nav>
+
+    <div id="wave-bar">
+        <div class="wave-title">🌊 일촌 파도타기</div>
+        <div class="wave-friends" id="wave-friends"></div>
+        <select id="wave-select" class="wave-dropdown">
+            <option value="">👥 친구 미니룸으로 이동</option>
+        </select>
+    </div>
 </div>
 
 <script>
@@ -745,7 +795,7 @@ function drawHighlight(cx,col,row,gw,gd,color){for(let dc=0;dc<gw;dc++)for(let d
 function itemPos(it){if(it.walk){const t=it.walk.t;return{col:it.walk.srcCol+(it.col-it.walk.srcCol)*t,row:it.walk.srcRow+(it.row-it.walk.srcRow)*t}}return{col:it.col,row:it.row}}
 function drawItems(cx){const arr=items.map((it,i)=>{const p=itemPos(it);return{...it,idx:i,_col:p.col,_row:p.row}}).sort((a,b)=>(a._col+a._row)-(b._col+b._row)||a._row-b._row);arr.forEach(it=>{const a=getAsset(it.assetId);if(!a)return;const fc=frontCorner(it._col,it._row,a.gw,a.gd);let bobY=0;if(a.cat==='character'){if(it.walk)bobY=animTick%2===0?0:-2;else bobY=(Math.floor(animTick/4)%2===0)?0:-1}const flipH=it.flip?-1:1;if(a.cat==='character'){cx.save();cx.fillStyle='rgba(40,20,10,0.22)';cx.beginPath();cx.ellipse(fc.x,fc.y-TH/2+6,9,2.5,0,0,Math.PI*2);cx.fill();cx.restore();if(flipH<0){cx.save();cx.translate(fc.x*2,0);cx.scale(-1,1);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}else a.draw(cx,fc.x,fc.y+bobY)}else{drawShadow(cx,fc.x,fc.y,a.gd*TW/2,a.gw*TW/2);cx.save();cx.translate(fc.x,fc.y);cx.scale(FS*flipH,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}if(it.idx===selectedItemIdx)drawHighlight(cx,it.col,it.row,a.gw,a.gd,P.select)})}
 function drawHoverPreview(cx){if(!hoverTile||!inGrid(hoverTile.col,hoverTile.row))return;if(tool==='place'&&selectedAssetId){const a=getAsset(selectedAssetId);if(!a)return;const v=canPlace(hoverTile.col,hoverTile.row,a.gw,a.gd,-1,a);drawHighlight(cx,hoverTile.col,hoverTile.row,a.gw,a.gd,v?P.valid:P.invalid);if(v){const fc=frontCorner(hoverTile.col,hoverTile.row,a.gw,a.gd);cx.globalAlpha=0.5;if(a.cat==='character'){a.draw(cx,fc.x,fc.y)}else{cx.save();cx.translate(fc.x,fc.y);cx.scale(FS,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y);cx.restore()}cx.globalAlpha=1}}else{const idx=getItemAt(hoverTile.col,hoverTile.row);if(idx>=0){const it=items[idx],a=getAsset(it.assetId);drawHighlight(cx,it.col,it.row,a.gw,a.gd,tool==='delete'?P.invalid:P.hover)}}}
-function render(){ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,canvas.width,canvas.height);const wp=WALLPAPERS[room.wallpaper],fl=FLOORS[room.floor];const g=ctx.createLinearGradient(0,0,0,canvas.height);g.addColorStop(0,wp.back);g.addColorStop(0.55,wp.left);g.addColorStop(0.55,fl.c1);g.addColorStop(1,fl.c2);ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);const mult=1.5;const sRaw=Math.max(canvas.width/CW,canvas.height/CH)*mult;const s=canvas._mobile?sRaw:Math.max(2,Math.ceil(sRaw));const tx=Math.round((canvas.width-CW*s)/2),ty=Math.round((canvas.height-CH*s)/2);ctx.translate(tx,ty);ctx.scale(s,s);drawWalls(ctx);drawFloor(ctx);drawHoverPreview(ctx);drawItems(ctx);drawParticles(ctx)}
+function render(){ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,canvas.width,canvas.height);const wp=WALLPAPERS[room.wallpaper],fl=FLOORS[room.floor];const g=ctx.createLinearGradient(0,0,0,canvas.height);g.addColorStop(0,wp.back);g.addColorStop(0.55,wp.left);g.addColorStop(0.55,fl.c1);g.addColorStop(1,fl.c2);ctx.fillStyle=g;ctx.fillRect(0,0,canvas.width,canvas.height);const mult=canvas._mobile?1.15:1.5;const sRaw=Math.max(canvas.width/CW,canvas.height/CH)*mult;const s=canvas._mobile?sRaw:Math.max(2,Math.ceil(sRaw));const tx=Math.round((canvas.width-CW*s)/2),ty=Math.round((canvas.height-CH*s)/2);ctx.translate(tx,ty);ctx.scale(s,s);drawWalls(ctx);drawFloor(ctx);drawHoverPreview(ctx);drawItems(ctx);drawParticles(ctx)}
 function resize(){if(!canvas)return;const box=document.getElementById('canvas-box');const w=Math.max(160,box.clientWidth),h=Math.max(160,box.clientHeight);const isMobile=window.innerWidth<900;const scale=isMobile?1:2;const cw=Math.floor(w/scale),ch=Math.floor(h/scale);canvas.width=cw;canvas.height=ch;canvas.style.width=(cw*scale)+'px';canvas.style.height=(ch*scale)+'px';canvas._mobile=isMobile;ctx.imageSmoothingEnabled=false;render()}
 
 // ===== ITEM MANAGEMENT =====
@@ -782,7 +832,7 @@ function applyTheme(themeKey,extraPets){const theme=THEMES[themeKey]||THEMES.def
 function handleStatusSubmit(){const input=document.getElementById('status-input'),msg=input.value.trim();if(!msg)return;document.getElementById('status-display').textContent='~ '+msg+' ~';const result=analyzeStatus(msg);const box=document.getElementById('canvas-box');box.classList.add('fade');setTimeout(()=>{applyTheme(result.theme,result.extraPets);if(!bgmPlaying)playBGM(THEMES[result.theme].bgm);else playBGM(THEMES[result.theme].bgm);box.classList.remove('fade');showToast(THEMES[result.theme].name+' 테마가 적용되었어요!')},300);localStorage.setItem('cy_status_v6',msg);input.value=''}
 
 // ===== MOUSE =====
-function getCP(e){const r=canvas.getBoundingClientRect();const mult=1.5;const sRaw=Math.max(canvas.width/CW,canvas.height/CH)*mult;const s=canvas._mobile?sRaw:Math.max(2,Math.ceil(sRaw));const tx=(canvas.width-CW*s)/2,ty=(canvas.height-CH*s)/2;const cx=(e.clientX-r.left)*canvas.width/r.width,cy=(e.clientY-r.top)*canvas.height/r.height;return{x:(cx-tx)/s,y:(cy-ty)/s}}
+function getCP(e){const r=canvas.getBoundingClientRect();const mult=canvas._mobile?1.15:1.5;const sRaw=Math.max(canvas.width/CW,canvas.height/CH)*mult;const s=canvas._mobile?sRaw:Math.max(2,Math.ceil(sRaw));const tx=(canvas.width-CW*s)/2,ty=(canvas.height-CH*s)/2;const cx=(e.clientX-r.left)*canvas.width/r.width,cy=(e.clientY-r.top)*canvas.height/r.height;return{x:(cx-tx)/s,y:(cy-ty)/s}}
 function onMove(e){const p=getCP(e),g=toGrid(p.x,p.y);hoverTile=inGrid(g.col,g.row)?g:null;render()}
 function onLeave(){hoverTile=null;render()}
 function onClick(e){const p=getCP(e),g=toGrid(p.x,p.y);if(!inGrid(g.col,g.row))return;const i=getItemAt(g.col,g.row);if(tool==='delete'){if(i>=0){const nm=getAsset(items[i].assetId).name;removeItem(i);if(selectedItemIdx===i)selectedItemIdx=-1;else if(selectedItemIdx>i)selectedItemIdx--;pendingMoveIdx=-1;updateItemActions();info(nm+' 삭제됨');render()}return}if(pendingMoveIdx>=0){let ok=false;if(i<0)ok=moveItem(pendingMoveIdx,g.col,g.row);if(ok){info('이동 완료!');selectedItemIdx=-1;pendingMoveIdx=-1;updateItemActions()}else info('이동할 수 없는 곳이에요');render();return}if(i>=0){selectedItemIdx=selectedItemIdx===i?-1:i;updateItemActions();render();return}if(selectedItemIdx>=0){selectedItemIdx=-1;updateItemActions();render();return}if(tool==='place'&&selectedAssetId){if(placeItem(selectedAssetId,g.col,g.row)){selectedAssetId=null;info('아이템을 선택해서 배치하세요');const activeCat=document.querySelector('.stab.active');if(activeCat)populateShop(activeCat.dataset.cat);render()}}}
@@ -831,6 +881,18 @@ function setupUI(){
     // Shop tabs
     document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.stab').forEach(x=>x.classList.remove('active'));b.classList.add('active');populateShop(b.dataset.cat)}));
     populateShop('furniture');updateNavAvatar();
+    // Wave (파도타기)
+    const FRIENDS=[{id:'f1',name:'수지',emoji:'🌸'},{id:'f2',name:'지민',emoji:'🍀'},{id:'f3',name:'민호',emoji:'⚡'},{id:'f4',name:'하늘',emoji:'☁️'},{id:'f5',name:'보라',emoji:'💜'}];
+    const wf=document.getElementById('wave-friends'),ws=document.getElementById('wave-select');
+    FRIENDS.forEach(f=>{
+        const el=document.createElement('div');el.className='wave-friend';
+        el.innerHTML=`<div class="wave-avatar">${f.emoji}</div><div class="wave-friend-name">${f.name}</div>`;
+        el.addEventListener('click',()=>{showToast(f.name+'님의 미니룸으로 파도타기!')});
+        wf.appendChild(el);
+        const opt=document.createElement('option');opt.value=f.id;opt.textContent=`${f.emoji} ${f.name}`;
+        ws.appendChild(opt);
+    });
+    ws.addEventListener('change',e=>{if(!e.target.value)return;const f=FRIENDS.find(x=>x.id===e.target.value);if(f)showToast(f.name+'님의 미니룸으로 파도타기!');e.target.value=''});
 }
 
 function init(){
