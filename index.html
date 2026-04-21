@@ -295,47 +295,52 @@ body{
 .right-footer a{color:var(--pink-d);cursor:pointer;text-decoration:none}
 .right-footer a:hover{text-decoration:underline}
 
-/* WAVE (파도타기 bar) */
-#wave-bar{
-    position:fixed;bottom:12px;left:12px;z-index:90;
-    background:rgba(255,255,255,0.95);border:2px solid var(--pink-l);
-    border-radius:10px;padding:8px 10px;
-    box-shadow:0 4px 14px rgba(200,90,30,0.2);
-    max-width:340px;
-}
-.wave-title{font-size:11px;color:var(--pink-d);font-weight:700;margin-bottom:6px;letter-spacing:0.5px}
-.wave-friends{display:flex;gap:8px;align-items:center}
+/* WAVE (파도타기) — now inside left panel */
+.wave-friends{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;justify-content:space-between}
 .wave-friend{
     display:flex;flex-direction:column;align-items:center;gap:2px;
-    cursor:pointer;padding:2px 4px;border-radius:6px;transition:all 0.15s;
-    min-width:42px;
+    cursor:pointer;padding:3px 2px;border-radius:6px;transition:all 0.15s;
+    flex:1 1 42px;min-width:38px;
 }
 .wave-friend:hover{background:var(--pink-bg);transform:translateY(-2px)}
 .wave-avatar{
-    width:32px;height:32px;border:2px solid var(--pink);border-radius:50%;
+    width:36px;height:36px;border:2px solid var(--pink);border-radius:50%;
     display:flex;align-items:center;justify-content:center;font-size:18px;
     background:#FFF8F0;
 }
-.wave-friend-name{font-size:9px;color:var(--txt);font-weight:600;white-space:nowrap}
-.wave-dropdown{display:none}
-@media (max-width:900px){
-    #wave-bar{
-        position:fixed;bottom:0;left:0;right:0;max-width:none;
-        border-radius:12px 12px 0 0;border-bottom:0;
-        padding:8px 14px;display:flex;align-items:center;gap:10px;
-    }
-    .wave-title{font-size:12px;margin-bottom:0;white-space:nowrap;flex-shrink:0}
-    .wave-friends{display:none}
-    .wave-dropdown{
-        display:block;flex:1;min-width:0;padding:8px 10px;
-        border:1px solid var(--pink-l);border-radius:6px;
-        font-family:var(--font);font-size:13px;color:var(--txt);
-        background:#FFF;cursor:pointer;outline:none;
-    }
-    .wave-dropdown:focus{border-color:var(--pink)}
-    /* bottom padding so content not hidden behind wave bar */
-    #cy-right{padding-bottom:72px}
+.wave-friend-name{font-size:10px;color:var(--txt);font-weight:600;white-space:nowrap}
+.wave-dropdown{
+    width:100%;padding:5px 8px;border:1px solid var(--pink-l);border-radius:4px;
+    font-family:var(--font);font-size:11px;color:var(--txt);
+    background:#FFF;cursor:pointer;outline:none;margin-top:4px;
 }
+.wave-dropdown:focus{border-color:var(--pink)}
+/* Docs (RAG) */
+.section-sub{font-size:9px;color:var(--txt2);font-weight:400;margin-left:4px}
+.doc-list{max-height:84px;overflow-y:auto;border:1px solid var(--border3);padding:4px;border-radius:3px;background:#FAFAFA;margin-bottom:5px;display:flex;flex-direction:column;gap:2px}
+.doc-item{padding:3px 6px;background:#FFF;border:1px solid var(--border3);border-radius:3px;display:flex;justify-content:space-between;align-items:center;font-size:11px;gap:4px}
+.doc-item:hover{background:var(--pink-bg)}
+.doc-item .doc-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-del{color:var(--pink-d);cursor:pointer;font-weight:700;padding:0 4px}
+.doc-del:hover{color:#c62}
+.doc-row,.doc-ask{display:flex;gap:4px;margin-bottom:5px}
+.doc-row input,.doc-ask input{flex:1;min-width:0;padding:5px 7px;border:1px solid var(--border);border-radius:3px;font-family:var(--font);font-size:11px;outline:none}
+.doc-row button,.doc-ask button{padding:5px 9px;background:var(--pink);color:#FFF;border:none;border-radius:3px;cursor:pointer;font-size:12px;font-weight:700}
+.doc-row button:hover,.doc-ask button:hover{background:var(--pink-d)}
+.doc-answer{font-size:11px;padding:6px 8px;background:#FFF8FA;border-radius:3px;min-height:36px;border:1px dashed var(--pink-l);color:var(--txt);line-height:1.4}
+/* Guestbook */
+.guestbook-list{max-height:200px;overflow-y:auto;padding:5px;background:#FAFAFA;border:1px solid var(--border3);border-radius:3px;margin-bottom:6px;display:flex;flex-direction:column;gap:5px}
+.gb-entry{padding:5px 7px;background:#FFF;border:1px solid var(--border3);border-radius:3px;font-size:11px}
+.gb-entry-head{display:flex;justify-content:space-between;color:var(--pink-d);font-weight:700;margin-bottom:3px;font-size:10px}
+.gb-entry-msg{color:var(--txt);line-height:1.4;word-break:break-word}
+.gb-empty{color:#aaa;padding:12px;text-align:center;font-size:11px}
+.guestbook-form{display:flex;flex-direction:column;gap:4px}
+.guestbook-form input,.guestbook-form textarea{padding:5px 7px;border:1px solid var(--border);border-radius:3px;font-family:var(--font);font-size:11px;outline:none;resize:none}
+.guestbook-form textarea{min-height:44px;resize:vertical}
+.guestbook-form input:focus,.guestbook-form textarea:focus{border-color:var(--pink)}
+.guestbook-form button{padding:6px;background:var(--pink);color:#FFF;border:none;border-radius:3px;cursor:pointer;font-size:12px;font-weight:700}
+.guestbook-form button:hover{background:var(--pink-d)}
+.panel-right{background:#FFF;border-top:1px solid var(--border3);padding:10px 12px}
 
 /* TOAST */
 .toast{
@@ -378,7 +383,10 @@ body{
     #cy-center{order:4;width:100%;min-height:auto;background:#FFF}
     #panel-status{order:5;background:#FFF;border-bottom:1px solid var(--border3);padding:10px 12px}
     #panel-music{order:6;background:#FFF8FA;border-bottom:1px solid var(--border3);padding:10px 12px}
+    #panel-wave{order:6.5;background:#FFF;border-bottom:1px solid var(--border3);padding:10px 12px}
+    #panel-docs{order:6.7;background:#FFF8FA;border-bottom:1px solid var(--border3);padding:10px 12px}
     #cy-right{order:7;border-left:none;border-top:2px solid var(--pink-l);width:100%}
+    #panel-guestbook{order:7.5}
     #bgm-list,#bgm-volume{display:none}
     .room-wrap{padding:8px 10px}
     .room-title-row{padding:4px 0}
@@ -435,7 +443,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-fr-ratios TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-guestbook-docs TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -484,6 +492,26 @@ body{
                     <button id="music-connect">연결</button>
                 </div>
             </div>
+        </div>
+        <div class="panel-section" id="panel-wave">
+            <div class="section-title">🌊 일촌 파도타기</div>
+            <div class="wave-friends" id="wave-friends"></div>
+            <select id="wave-select" class="wave-dropdown">
+                <option value="">친구 미니룸으로 이동 ▾</option>
+            </select>
+        </div>
+        <div class="panel-section" id="panel-docs">
+            <div class="section-title">📄 문서함 <span class="section-sub">(RAG)</span></div>
+            <div id="doc-list" class="doc-list"></div>
+            <div class="doc-row">
+                <input type="text" id="doc-name" placeholder="문서 이름 추가" maxlength="30">
+                <button id="doc-add">+</button>
+            </div>
+            <div class="doc-ask">
+                <input type="text" id="doc-query" placeholder="문서에 질문하기..." maxlength="60">
+                <button id="doc-ask-btn">💬</button>
+            </div>
+            <div id="doc-answer" class="doc-answer">문서를 추가하고 질문해보세요</div>
         </div>
     </aside>
 
@@ -553,19 +581,20 @@ body{
             <a class="nav-tab disabled">즐겨찾기</a>
             <a class="nav-tab disabled">관리</a>
         </div>
+        <div class="panel-section panel-right" id="panel-guestbook">
+            <div class="section-title">📝 방명록 <span class="section-sub" id="gb-count">0</span></div>
+            <div id="guestbook-list" class="guestbook-list"></div>
+            <div class="guestbook-form">
+                <input type="text" id="gb-name" placeholder="이름" maxlength="10">
+                <textarea id="gb-msg" placeholder="메시지를 남겨주세요..." maxlength="100"></textarea>
+                <button id="gb-submit">💌 남기기</button>
+            </div>
+        </div>
         <div class="right-footer">
             <a>파도타기</a> · <a>일촌신청</a><br>
             <a>일촌평 보기</a>
         </div>
     </nav>
-
-    <div id="wave-bar">
-        <div class="wave-title">🌊 일촌 파도타기</div>
-        <div class="wave-friends" id="wave-friends"></div>
-        <select id="wave-select" class="wave-dropdown">
-            <option value="">👥 친구 미니룸으로 이동</option>
-        </select>
-    </div>
 </div>
 
 <script>
@@ -841,6 +870,19 @@ function updateItemActions(){const infoEl=document.getElementById('info-text'),a
 // ===== UI =====
 function info(t){document.getElementById('info-text').textContent=t}
 function showToast(m){let t=document.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';document.body.appendChild(t)}t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+// ===== GUESTBOOK =====
+const GB_KEY='cy_guestbook_v1';
+function sanitize(s){return String(s).replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]))}
+function loadGB(){try{return JSON.parse(localStorage.getItem(GB_KEY))||[]}catch{return[]}}
+function saveGB(e){localStorage.setItem(GB_KEY,JSON.stringify(e))}
+function renderGB(){const list=document.getElementById('guestbook-list');if(!list)return;const entries=loadGB();document.getElementById('gb-count').textContent=entries.length;if(entries.length===0){list.innerHTML='<div class="gb-empty">아직 방명록이 없어요 ♥<br>첫 메시지를 남겨주세요!</div>';return}list.innerHTML=entries.slice().reverse().map(e=>`<div class="gb-entry"><div class="gb-entry-head"><span>${sanitize(e.name)}</span><span>${sanitize(e.date)}</span></div><div class="gb-entry-msg">${sanitize(e.msg)}</div></div>`).join('')}
+function initGuestbook(){if(loadGB().length===0)saveGB([{name:'수지',msg:'미니룸 너무 예뻐! ♥',date:'04.12'},{name:'지민',msg:'놀러왔다 가요 🌸',date:'04.15'},{name:'민호',msg:'BGM 선곡 최고!',date:'04.18'}]);document.getElementById('gb-submit').addEventListener('click',()=>{const n=document.getElementById('gb-name').value.trim()||'익명';const m=document.getElementById('gb-msg').value.trim();if(!m){showToast('메시지를 입력해주세요');return}const d=new Date(),date=(d.getMonth()+1).toString().padStart(2,'0')+'.'+d.getDate().toString().padStart(2,'0');const entries=loadGB();entries.push({name:n.slice(0,10),msg:m.slice(0,100),date});saveGB(entries);document.getElementById('gb-name').value='';document.getElementById('gb-msg').value='';renderGB();showToast('방명록 등록 완료 ♥')});renderGB()}
+// ===== DOCS (RAG placeholder) =====
+const DOC_KEY='cy_docs_v1';
+function loadDocs(){try{return JSON.parse(localStorage.getItem(DOC_KEY))||[]}catch{return[]}}
+function saveDocs(d){localStorage.setItem(DOC_KEY,JSON.stringify(d))}
+function renderDocs(){const list=document.getElementById('doc-list');if(!list)return;const docs=loadDocs();if(docs.length===0){list.innerHTML='<div class="gb-empty" style="padding:8px">문서를 추가하세요</div>';return}list.innerHTML=docs.map((d,i)=>`<div class="doc-item"><span class="doc-name">📄 ${sanitize(d.name)}</span><span class="doc-del" data-i="${i}">×</span></div>`).join('')}
+function initDocs(){if(loadDocs().length===0)saveDocs([{name:'my_notes.md'},{name:'recipes.txt'},{name:'diary_2026.md'}]);document.getElementById('doc-add').addEventListener('click',()=>{const n=document.getElementById('doc-name').value.trim();if(!n)return;const docs=loadDocs();docs.push({name:n.slice(0,30)});saveDocs(docs);document.getElementById('doc-name').value='';renderDocs()});document.getElementById('doc-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('doc-add').click()});document.getElementById('doc-list').addEventListener('click',e=>{if(e.target.classList.contains('doc-del')){const i=+e.target.dataset.i,docs=loadDocs();docs.splice(i,1);saveDocs(docs);renderDocs()}});const askBtn=document.getElementById('doc-ask-btn'),qIn=document.getElementById('doc-query'),ans=document.getElementById('doc-answer');function ask(){const q=qIn.value.trim();if(!q)return;const docs=loadDocs();if(docs.length===0){ans.textContent='먼저 문서를 추가해주세요';return}ans.innerHTML='🔍 <i>"'+sanitize(q)+'"</i> 검색 중...';setTimeout(()=>{ans.innerHTML='<b>📂 관련 문서:</b> '+docs.map(d=>sanitize(d.name)).slice(0,2).join(', ')+'<br><span style="color:#888;font-size:10px">※ RAG 백엔드 연결 후 실제 답변이 표시됩니다</span>'},600)}askBtn.addEventListener('click',ask);qIn.addEventListener('keydown',e=>{if(e.key==='Enter')ask()});renderDocs()}
 function updateNavAvatar(){const el=document.getElementById('nav-avatar');if(!el)return;const tx=el.getContext('2d');tx.imageSmoothingEnabled=false;tx.clearRect(0,0,64,64);drawCharSprite(tx,32,62,null,1)}
 
 function populateShop(cat){const gd=document.getElementById('shop-grid');gd.innerHTML='';const outfitCats={hair:HAIR_ITEMS,top:TOP_ITEMS,bottom:BOT_ITEMS,shoes:SHOE_ITEMS};if(cat==='wallpaper'){WALLPAPERS.forEach((wp,idx)=>{const card=document.createElement('div');card.className='item-card'+(room.wallpaper===idx?' equipped':'');const thumb=document.createElement('img');thumb.className='thumb';thumb.src=genWallpaperThumb(wp);const nm=document.createElement('div');nm.className='iname';nm.textContent=wp.name;const tag=document.createElement('div');tag.className='itag';tag.textContent=room.wallpaper===idx?'적용중':'';card.append(thumb,nm,tag);card.addEventListener('click',()=>{room.wallpaper=idx;render();populateShop(cat)});gd.appendChild(card)})}else if(cat==='floor'){FLOORS.forEach((fl,idx)=>{const card=document.createElement('div');card.className='item-card'+(room.floor===idx?' equipped':'');const thumb=document.createElement('img');thumb.className='thumb';thumb.src=genFloorThumb(fl);const nm=document.createElement('div');nm.className='iname';nm.textContent=fl.name;const tag=document.createElement('div');tag.className='itag';tag.textContent=room.floor===idx?'적용중':'';card.append(thumb,nm,tag);card.addEventListener('click',()=>{room.floor=idx;render();populateShop(cat)});gd.appendChild(card)})}else if(outfitCats[cat]){outfitCats[cat].forEach((item,idx)=>{const card=document.createElement('div');card.className='item-card'+(outfit[cat]===idx?' equipped':'');const thumb=document.createElement('img');thumb.className='thumb';thumb.src=genOutfitThumb(cat,item);const nm=document.createElement('div');nm.className='iname';nm.textContent=item.name;const tag=document.createElement('div');tag.className='itag';tag.textContent=outfit[cat]===idx?'착용중':'';card.append(thumb,nm,tag);card.addEventListener('click',()=>{outfit[cat]=idx;thumbCache={};render();populateShop(cat);updateNavAvatar()});gd.appendChild(card)})}else{ASSETS.filter(a=>a.cat===cat).forEach(asset=>{const card=document.createElement('div');card.className='item-card'+(selectedAssetId===asset.id?' selected':'');const thumb=document.createElement('img');thumb.className='thumb';thumb.src=genThumb(asset);const nm=document.createElement('div');nm.className='iname';nm.textContent=asset.name;card.append(thumb,nm);card.addEventListener('click',()=>{selectedAssetId=asset.id;tool='place';document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));document.querySelector('[data-tool="place"]').classList.add('active');info(asset.name+' 배치 모드');populateShop(cat)});gd.appendChild(card)})}}
@@ -881,6 +923,7 @@ function setupUI(){
     // Shop tabs
     document.querySelectorAll('.stab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.stab').forEach(x=>x.classList.remove('active'));b.classList.add('active');populateShop(b.dataset.cat)}));
     populateShop('furniture');updateNavAvatar();
+    initGuestbook();initDocs();
     // Wave (파도타기)
     const FRIENDS=[{id:'f1',name:'수지',emoji:'🌸'},{id:'f2',name:'지민',emoji:'🍀'},{id:'f3',name:'민호',emoji:'⚡'},{id:'f4',name:'하늘',emoji:'☁️'},{id:'f5',name:'보라',emoji:'💜'}];
     const wf=document.getElementById('wave-friends'),ws=document.getElementById('wave-select');
