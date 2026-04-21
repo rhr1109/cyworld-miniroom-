@@ -443,7 +443,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-iso-planks TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-extend-patterns TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -1067,24 +1067,24 @@ function drawParticles(cx){particles.forEach(p=>{const a=p.alpha*(0.5+0.5*Math.s
 
 // ===== RENDERING =====
 function drawWalls(cx){const wp=WALLPAPERS[room.wallpaper],tl=toScreen(0,0),tr=toScreen(GRID,0),bl=toScreen(0,GRID);const backSlope=(tr.y-tl.y)/(tr.x-tl.x),leftSlope=(bl.y-tl.y)/(bl.x-tl.x);
-// back wall (iso parallelogram + pattern)
-cx.save();cx.beginPath();cx.moveTo(tl.x,tl.y-WALL_H);cx.lineTo(tr.x,tr.y-WALL_H);cx.lineTo(tr.x,tr.y);cx.lineTo(tl.x,tl.y);cx.closePath();cx.clip();cx.fillStyle=wp.back;cx.fillRect(tl.x-10,tl.y-WALL_H-10,tr.x-tl.x+20,WALL_H+20);fillWallPattern(cx,wp,tl.x-10,tl.y-WALL_H,tr.x-tl.x+20,WALL_H,backSlope);cx.restore();
-// left wall
-cx.save();cx.beginPath();cx.moveTo(tl.x,tl.y-WALL_H);cx.lineTo(tl.x,tl.y);cx.lineTo(bl.x,bl.y);cx.lineTo(bl.x,bl.y-WALL_H);cx.closePath();cx.clip();cx.fillStyle=wp.left;cx.fillRect(bl.x-10,tl.y-WALL_H-10,tl.x-bl.x+20,WALL_H+bl.y-tl.y+20);fillWallPattern(cx,wp,bl.x-10,tl.y-WALL_H,tl.x-bl.x+20,WALL_H+bl.y-tl.y,leftSlope);cx.restore();
+// back wall extended to canvas top-right corner (wp pattern fills including empty triangle)
+cx.save();cx.beginPath();cx.moveTo(tl.x,0);cx.lineTo(CW,0);cx.lineTo(tr.x,tr.y);cx.lineTo(tl.x,tl.y);cx.closePath();cx.clip();cx.fillStyle=wp.back;cx.fillRect(tl.x-10,-10,CW-tl.x+20,tr.y+20);fillWallPattern(cx,wp,tl.x-10,0,CW-tl.x+20,tr.y,backSlope);cx.restore();
+// left wall extended to canvas top-left corner
+cx.save();cx.beginPath();cx.moveTo(tl.x,0);cx.lineTo(tl.x,tl.y);cx.lineTo(bl.x,bl.y);cx.lineTo(0,0);cx.closePath();cx.clip();cx.fillStyle=wp.left;cx.fillRect(-10,-10,tl.x+20,bl.y+20);fillWallPattern(cx,wp,-10,0,tl.x+20,bl.y,leftSlope);cx.restore();
 // baseboard along iso floor front edges
 cx.fillStyle=P.baseboard;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(tr.x,tr.y-10);cx.lineTo(tl.x,tl.y-10);cx.closePath();cx.fill();
 cx.fillStyle=P.baseboardS;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(bl.x,bl.y);cx.lineTo(bl.x,bl.y-10);cx.lineTo(tl.x,tl.y-10);cx.closePath();cx.fill();
-// wall corner vertical line
-cx.strokeStyle='rgba(0,0,0,0.08)';cx.lineWidth=1;cx.beginPath();cx.moveTo(tl.x,tl.y-WALL_H);cx.lineTo(tl.x,tl.y);cx.stroke();
+// wall corner vertical line at apex
+cx.strokeStyle='rgba(0,0,0,0.08)';cx.lineWidth=1;cx.beginPath();cx.moveTo(tl.x,0);cx.lineTo(tl.x,tl.y);cx.stroke();
 drawWindow(cx,tl,tr)}
 function drawWindow(cx,tl,tr){const t=0.58,vt=0.55,hw=28,hh=22,slope=(tr.y-tl.y)/(tr.x-tl.x),cxw=tl.x+t*(tr.x-tl.x),cyw=tl.y+t*(tr.y-tl.y)-WALL_H*vt;const TL={x:cxw-hw,y:cyw-hw*slope-hh},TR={x:cxw+hw,y:cyw+hw*slope-hh},BR={x:cxw+hw,y:cyw+hw*slope+hh},BL={x:cxw-hw,y:cyw-hw*slope+hh};const fw=3,fh=3;const FTL={x:TL.x-fw,y:TL.y-fw*slope-fh},FTR={x:TR.x+fw,y:TR.y+fw*slope-fh},FBR={x:BR.x+fw,y:BR.y+fw*slope+fh},FBL={x:BL.x-fw,y:BL.y-fw*slope+fh};cx.fillStyle='#8B6F47';cx.beginPath();cx.moveTo(FTL.x,FTL.y);cx.lineTo(FTR.x,FTR.y);cx.lineTo(FBR.x,FBR.y);cx.lineTo(FBL.x,FBL.y);cx.closePath();cx.fill();const grad=cx.createLinearGradient(TL.x,TL.y,BL.x,BL.y);grad.addColorStop(0,'#B8E0FF');grad.addColorStop(0.6,'#D8EFFF');grad.addColorStop(1,'#FFE8B8');cx.fillStyle=grad;cx.beginPath();cx.moveTo(TL.x,TL.y);cx.lineTo(TR.x,TR.y);cx.lineTo(BR.x,BR.y);cx.lineTo(BL.x,BL.y);cx.closePath();cx.fill();const midX=(TL.x+TR.x)/2,midY=(TL.y+TR.y)/2+hh*0.3;cx.fillStyle='#FFD580';cx.beginPath();cx.arc(midX+hw*0.4,midY-hh*0.3,6,0,Math.PI*2);cx.fill();cx.fillStyle='rgba(255,255,255,0.8)';cx.beginPath();cx.arc(midX-hw*0.3,midY+2,4,0,Math.PI*2);cx.arc(midX-hw*0.1,midY,5,0,Math.PI*2);cx.arc(midX+hw*0.1,midY+1,4,0,Math.PI*2);cx.fill();cx.strokeStyle='#FFF';cx.lineWidth=2;cx.lineCap='square';cx.beginPath();cx.moveTo(cxw,cyw-hh);cx.lineTo(cxw,cyw+hh);cx.stroke();cx.beginPath();cx.moveTo(cxw-hw,cyw-hw*slope);cx.lineTo(cxw+hw,cyw+hw*slope);cx.stroke();cx.strokeStyle='#FFF';cx.lineWidth=2;cx.beginPath();cx.moveTo(TL.x,TL.y);cx.lineTo(TR.x,TR.y);cx.lineTo(BR.x,BR.y);cx.lineTo(BL.x,BL.y);cx.closePath();cx.stroke();cx.strokeStyle='#5D4B32';cx.lineWidth=1;cx.beginPath();cx.moveTo(FTL.x,FTL.y);cx.lineTo(FTR.x,FTR.y);cx.lineTo(FBR.x,FBR.y);cx.lineTo(FBL.x,FBL.y);cx.closePath();cx.stroke();cx.fillStyle='#A87850';cx.beginPath();cx.moveTo(FBL.x-2,FBL.y-2*slope);cx.lineTo(FBR.x+2,FBR.y+2*slope);cx.lineTo(FBR.x+2,FBR.y+2*slope+4);cx.lineTo(FBL.x-2,FBL.y-2*slope+4);cx.closePath();cx.fill();cx.strokeStyle='#5D4B32';cx.lineWidth=0.5;cx.stroke()}
 function drawFloor(cx){const fl=FLOORS[room.floor];const tl=toScreen(0,0),tr=toScreen(GRID,0),br=toScreen(GRID,GRID),bl=toScreen(0,GRID);
-// iso diamond with clip
-cx.save();cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(br.x,br.y);cx.lineTo(bl.x,bl.y);cx.closePath();cx.fillStyle=fl.c1;cx.fill();cx.clip();
-// plank stripes (every 2nd col is darker)
-cx.fillStyle=fl.c2;for(let c=1;c<GRID;c+=2){const s1=toScreen(c,0),s2=toScreen(c+1,0),s3=toScreen(c+1,GRID),s4=toScreen(c,GRID);cx.beginPath();cx.moveTo(s1.x,s1.y);cx.lineTo(s2.x,s2.y);cx.lineTo(s3.x,s3.y);cx.lineTo(s4.x,s4.y);cx.closePath();cx.fill()}
+// Extended floor polygon: iso diamond + bottom corners
+cx.save();cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(CW,tr.y);cx.lineTo(CW,CH);cx.lineTo(0,CH);cx.lineTo(0,bl.y);cx.lineTo(bl.x,bl.y);cx.closePath();cx.fillStyle=fl.c1;cx.fill();cx.clip();
+// Plank stripes extended beyond grid to fill bottom corners
+cx.fillStyle=fl.c2;for(let c=-6;c<GRID+6;c+=2){const s1=toScreen(c,-6),s2=toScreen(c+1,-6),s3=toScreen(c+1,GRID+6),s4=toScreen(c,GRID+6);cx.beginPath();cx.moveTo(s1.x,s1.y);cx.lineTo(s2.x,s2.y);cx.lineTo(s3.x,s3.y);cx.lineTo(s4.x,s4.y);cx.closePath();cx.fill()}
 cx.restore();
-// diamond outline (subtle iso edge)
+// diamond outline (subtle iso edge cue)
 cx.strokeStyle=fl.edge;cx.lineWidth=0.5;cx.beginPath();cx.moveTo(tl.x,tl.y);cx.lineTo(tr.x,tr.y);cx.lineTo(br.x,br.y);cx.lineTo(bl.x,bl.y);cx.closePath();cx.stroke()}
 function drawHighlight(cx,col,row,gw,gd,color){for(let dc=0;dc<gw;dc++)for(let dr=0;dr<gd;dr++){const s=toScreen(col+dc,row+dr);drawFloorDiamond(cx,s.x,s.y,color,null)}}
 function itemPos(it){if(it.walk){const t=it.walk.t;return{col:it.walk.srcCol+(it.col-it.walk.srcCol)*t,row:it.walk.srcRow+(it.row-it.walk.srcRow)*t}}return{col:it.col,row:it.row}}
