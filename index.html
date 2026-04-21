@@ -171,13 +171,13 @@ body{
 .room-title span{color:var(--txt2);font-size:13px;font-weight:400}
 .room-stats-top{font-size:12px;color:var(--txt2)}
 #canvas-box{
-    flex:1;min-height:0;
+    flex:1;min-height:0;margin:0 auto;
     display:flex;align-items:center;justify-content:center;
     position:relative;transition:opacity 0.3s ease;
 }
 #canvas-box.fade{opacity:0}
 #room-canvas{
-    display:block;aspect-ratio:576/428;max-width:100%;max-height:100%;width:auto;height:auto;
+    display:block;
     border:2px solid var(--pink-l);border-radius:6px;
     background:linear-gradient(180deg,#FFF8F0 0%,#FFE8D8 100%);
     box-shadow:inset 0 1px 3px rgba(200,90,30,0.1);
@@ -382,7 +382,7 @@ body{
     #bgm-list,#bgm-volume{display:none}
     .room-wrap{padding:8px 10px}
     .room-title-row{padding:4px 0}
-    #canvas-box{width:100%;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:576/428}
+    #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:576/428;min-height:200px}
     #edit-bar{flex-wrap:wrap;gap:5px;padding:6px 8px}
     #shop{max-height:none;min-height:auto;flex:0 0 auto}
     #stat-bars{flex-direction:row;flex-wrap:wrap;gap:6px 12px;padding:8px 10px}
@@ -435,7 +435,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-room-corners TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-js-size TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -796,7 +796,7 @@ function itemPos(it){if(it.walk){const t=it.walk.t;return{col:it.walk.srcCol+(it
 function drawItems(cx){const arr=items.map((it,i)=>{const p=itemPos(it);return{...it,idx:i,_col:p.col,_row:p.row}}).sort((a,b)=>(a._col+a._row)-(b._col+b._row)||a._row-b._row);arr.forEach(it=>{const a=getAsset(it.assetId);if(!a)return;const fc=frontCorner(it._col,it._row,a.gw,a.gd);let bobY=0;if(a.cat==='character'){if(it.walk)bobY=animTick%2===0?0:-2;else bobY=(Math.floor(animTick/4)%2===0)?0:-1}const flipH=it.flip?-1:1;if(a.cat==='character'){cx.save();cx.fillStyle='rgba(40,20,10,0.22)';cx.beginPath();cx.ellipse(fc.x,fc.y-TH/2+6,9,2.5,0,0,Math.PI*2);cx.fill();cx.restore();if(flipH<0){cx.save();cx.translate(fc.x*2,0);cx.scale(-1,1);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}else a.draw(cx,fc.x,fc.y+bobY)}else{drawShadow(cx,fc.x,fc.y,a.gd*TW/2,a.gw*TW/2);cx.save();cx.translate(fc.x,fc.y);cx.scale(FS*flipH,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}if(it.idx===selectedItemIdx)drawHighlight(cx,it.col,it.row,a.gw,a.gd,P.select)})}
 function drawHoverPreview(cx){if(!hoverTile||!inGrid(hoverTile.col,hoverTile.row))return;if(tool==='place'&&selectedAssetId){const a=getAsset(selectedAssetId);if(!a)return;const v=canPlace(hoverTile.col,hoverTile.row,a.gw,a.gd,-1,a);drawHighlight(cx,hoverTile.col,hoverTile.row,a.gw,a.gd,v?P.valid:P.invalid);if(v){const fc=frontCorner(hoverTile.col,hoverTile.row,a.gw,a.gd);cx.globalAlpha=0.5;if(a.cat==='character'){a.draw(cx,fc.x,fc.y)}else{cx.save();cx.translate(fc.x,fc.y);cx.scale(FS,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y);cx.restore()}cx.globalAlpha=1}}else{const idx=getItemAt(hoverTile.col,hoverTile.row);if(idx>=0){const it=items[idx],a=getAsset(it.assetId);drawHighlight(cx,it.col,it.row,a.gw,a.gd,tool==='delete'?P.invalid:P.hover)}}}
 function render(){ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,CW,CH);const wp=WALLPAPERS[room.wallpaper];const g=ctx.createLinearGradient(0,0,0,CH);g.addColorStop(0,wp.back);g.addColorStop(1,wp.left);ctx.fillStyle=g;ctx.fillRect(0,0,CW,CH);drawWalls(ctx);drawFloor(ctx);drawHoverPreview(ctx);drawItems(ctx);drawParticles(ctx)}
-function resize(){if(!canvas)return;canvas.width=CW;canvas.height=CH;canvas._mobile=window.innerWidth<900;ctx.imageSmoothingEnabled=false;render()}
+function resize(){if(!canvas)return;canvas.width=CW;canvas.height=CH;canvas._mobile=window.innerWidth<900;const box=document.getElementById('canvas-box');const parent=box.parentElement;const pcs=getComputedStyle(parent);const pw=parent.clientWidth-parseFloat(pcs.paddingLeft)-parseFloat(pcs.paddingRight);let availH=parent.clientHeight-parseFloat(pcs.paddingTop)-parseFloat(pcs.paddingBottom);Array.from(parent.children).forEach(sib=>{if(sib===box||getComputedStyle(sib).display==='none')return;availH-=sib.offsetHeight});const gap=parseFloat(pcs.gap)||0;const vis=Array.from(parent.children).filter(c=>getComputedStyle(c).display!=='none').length;availH-=gap*Math.max(0,vis-1);availH=Math.max(100,availH);const aspect=CW/CH;let w=pw,h=w/aspect;if(h>availH){h=availH;w=h*aspect}box.style.flex='none';box.style.width=Math.floor(w)+'px';box.style.height=Math.floor(h)+'px';canvas.style.width='100%';canvas.style.height='100%';ctx.imageSmoothingEnabled=false;render()}
 
 // ===== ITEM MANAGEMENT =====
 function canPlace(c,r,gw,gd,ig,pa){for(let dc=0;dc<gw;dc++)for(let dr=0;dr<gd;dr++){if(!inGrid(c+dc,r+dr))return false;const occ=grid[c+dc][r+dr];if(occ>=0&&occ!==ig){if(pa&&pa.cat==='character'){const oa=getAsset(items[occ].assetId);if(oa.cat==='character'||oa.id==='rug'||oa.id==='cushion')continue}return false}}return true}
