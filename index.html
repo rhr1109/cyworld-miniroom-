@@ -170,8 +170,10 @@ body{
 .room-title::before{content:'✿ Mini Room ✿';color:var(--pink);font-size:14px}
 .room-title span{color:var(--txt2);font-size:13px;font-weight:400}
 .room-stats-top{font-size:12px;color:var(--txt2)}
+.room-main{flex:1;min-height:0;display:flex;gap:10px;align-items:stretch}
+.room-side{flex:1;min-width:0;min-height:0;display:flex;flex-direction:column;gap:8px;overflow:hidden}
 #canvas-box{
-    flex:1;min-height:0;margin:0 auto;
+    flex:none;
     display:flex;align-items:center;justify-content:center;
     position:relative;transition:opacity 0.3s ease;
 }
@@ -382,6 +384,8 @@ body{
     #bgm-list,#bgm-volume{display:none}
     .room-wrap{padding:8px 10px}
     .room-title-row{padding:4px 0}
+    .room-main{flex-direction:column;gap:8px}
+    .room-side{flex:0 0 auto}
     #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:576/428;min-height:200px}
     #edit-bar{flex-wrap:wrap;gap:5px;padding:6px 8px}
     #shop{max-height:none;min-height:auto;flex:0 0 auto}
@@ -435,7 +439,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-js-size TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-side-panel TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -493,42 +497,46 @@ body{
                 <div class="room-title"><span>~ 나의 작은 공간 ~</span></div>
                 <div class="room-stats-top">꾸밀수록 예뻐져요 ♥</div>
             </div>
-            <div id="canvas-box"><canvas id="room-canvas"></canvas></div>
-            <div id="edit-bar">
-                <div class="tools-left">
-                    <button class="tool-btn active" data-tool="place">배치</button>
-                    <button class="tool-btn" data-tool="select">이동</button>
-                    <button class="tool-btn" data-tool="delete">삭제</button>
+            <div class="room-main">
+              <div id="canvas-box"><canvas id="room-canvas"></canvas></div>
+              <div class="room-side">
+                <div id="edit-bar">
+                    <div class="tools-left">
+                        <button class="tool-btn active" data-tool="place">배치</button>
+                        <button class="tool-btn" data-tool="select">이동</button>
+                        <button class="tool-btn" data-tool="delete">삭제</button>
+                    </div>
+                    <span id="info-text">아이템을 선택해서 배치하세요</span>
+                    <div id="item-actions" style="display:none">
+                        <span id="item-actions-name"></span>
+                        <button class="act-btn sel-btn" id="btn-item-move">이동</button>
+                        <button class="act-btn sel-btn" id="btn-item-rotate">회전</button>
+                        <button class="act-btn sel-btn" id="btn-item-delete">삭제</button>
+                        <button class="act-btn sel-btn" id="btn-item-cancel">취소</button>
+                    </div>
+                    <div class="tools-right">
+                        <button id="save-btn" class="act-btn">저장</button>
+                        <button id="clear-btn" class="act-btn">초기화</button>
+                    </div>
                 </div>
-                <span id="info-text">아이템을 선택해서 배치하세요</span>
-                <div id="item-actions" style="display:none">
-                    <span id="item-actions-name"></span>
-                    <button class="act-btn sel-btn" id="btn-item-move">이동</button>
-                    <button class="act-btn sel-btn" id="btn-item-rotate">회전</button>
-                    <button class="act-btn sel-btn" id="btn-item-delete">삭제</button>
-                    <button class="act-btn sel-btn" id="btn-item-cancel">취소</button>
+                <div id="shop">
+                    <div id="shop-tabs">
+                        <button class="stab active" data-cat="furniture">가구</button>
+                        <button class="stab" data-cat="electronics">가전</button>
+                        <button class="stab" data-cat="deco">소품</button>
+                        <button class="stab" data-cat="character">캐릭터</button>
+                        <span class="stab-sep"></span>
+                        <button class="stab" data-cat="wallpaper">벽지</button>
+                        <button class="stab" data-cat="floor">바닥</button>
+                        <span class="stab-sep"></span>
+                        <button class="stab" data-cat="hair">헤어</button>
+                        <button class="stab" data-cat="top">상의</button>
+                        <button class="stab" data-cat="bottom">하의</button>
+                        <button class="stab" data-cat="shoes">신발</button>
+                    </div>
+                    <div id="shop-grid"></div>
                 </div>
-                <div class="tools-right">
-                    <button id="save-btn" class="act-btn">저장</button>
-                    <button id="clear-btn" class="act-btn">초기화</button>
-                </div>
-            </div>
-            <div id="shop">
-                <div id="shop-tabs">
-                    <button class="stab active" data-cat="furniture">가구</button>
-                    <button class="stab" data-cat="electronics">가전</button>
-                    <button class="stab" data-cat="deco">소품</button>
-                    <button class="stab" data-cat="character">캐릭터</button>
-                    <span class="stab-sep"></span>
-                    <button class="stab" data-cat="wallpaper">벽지</button>
-                    <button class="stab" data-cat="floor">바닥</button>
-                    <span class="stab-sep"></span>
-                    <button class="stab" data-cat="hair">헤어</button>
-                    <button class="stab" data-cat="top">상의</button>
-                    <button class="stab" data-cat="bottom">하의</button>
-                    <button class="stab" data-cat="shoes">신발</button>
-                </div>
-                <div id="shop-grid"></div>
+              </div>
             </div>
         </div>
     </section>
@@ -796,7 +804,7 @@ function itemPos(it){if(it.walk){const t=it.walk.t;return{col:it.walk.srcCol+(it
 function drawItems(cx){const arr=items.map((it,i)=>{const p=itemPos(it);return{...it,idx:i,_col:p.col,_row:p.row}}).sort((a,b)=>(a._col+a._row)-(b._col+b._row)||a._row-b._row);arr.forEach(it=>{const a=getAsset(it.assetId);if(!a)return;const fc=frontCorner(it._col,it._row,a.gw,a.gd);let bobY=0;if(a.cat==='character'){if(it.walk)bobY=animTick%2===0?0:-2;else bobY=(Math.floor(animTick/4)%2===0)?0:-1}const flipH=it.flip?-1:1;if(a.cat==='character'){cx.save();cx.fillStyle='rgba(40,20,10,0.22)';cx.beginPath();cx.ellipse(fc.x,fc.y-TH/2+6,9,2.5,0,0,Math.PI*2);cx.fill();cx.restore();if(flipH<0){cx.save();cx.translate(fc.x*2,0);cx.scale(-1,1);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}else a.draw(cx,fc.x,fc.y+bobY)}else{drawShadow(cx,fc.x,fc.y,a.gd*TW/2,a.gw*TW/2);cx.save();cx.translate(fc.x,fc.y);cx.scale(FS*flipH,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y+bobY);cx.restore()}if(it.idx===selectedItemIdx)drawHighlight(cx,it.col,it.row,a.gw,a.gd,P.select)})}
 function drawHoverPreview(cx){if(!hoverTile||!inGrid(hoverTile.col,hoverTile.row))return;if(tool==='place'&&selectedAssetId){const a=getAsset(selectedAssetId);if(!a)return;const v=canPlace(hoverTile.col,hoverTile.row,a.gw,a.gd,-1,a);drawHighlight(cx,hoverTile.col,hoverTile.row,a.gw,a.gd,v?P.valid:P.invalid);if(v){const fc=frontCorner(hoverTile.col,hoverTile.row,a.gw,a.gd);cx.globalAlpha=0.5;if(a.cat==='character'){a.draw(cx,fc.x,fc.y)}else{cx.save();cx.translate(fc.x,fc.y);cx.scale(FS,FS);cx.translate(-fc.x,-fc.y);a.draw(cx,fc.x,fc.y);cx.restore()}cx.globalAlpha=1}}else{const idx=getItemAt(hoverTile.col,hoverTile.row);if(idx>=0){const it=items[idx],a=getAsset(it.assetId);drawHighlight(cx,it.col,it.row,a.gw,a.gd,tool==='delete'?P.invalid:P.hover)}}}
 function render(){ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;ctx.clearRect(0,0,CW,CH);const wp=WALLPAPERS[room.wallpaper];const g=ctx.createLinearGradient(0,0,0,CH);g.addColorStop(0,wp.back);g.addColorStop(1,wp.left);ctx.fillStyle=g;ctx.fillRect(0,0,CW,CH);drawWalls(ctx);drawFloor(ctx);drawHoverPreview(ctx);drawItems(ctx);drawParticles(ctx)}
-function resize(){if(!canvas)return;canvas.width=CW;canvas.height=CH;canvas._mobile=window.innerWidth<900;const box=document.getElementById('canvas-box');const parent=box.parentElement;const pcs=getComputedStyle(parent);const pw=parent.clientWidth-parseFloat(pcs.paddingLeft)-parseFloat(pcs.paddingRight);let availH=parent.clientHeight-parseFloat(pcs.paddingTop)-parseFloat(pcs.paddingBottom);Array.from(parent.children).forEach(sib=>{if(sib===box||getComputedStyle(sib).display==='none')return;availH-=sib.offsetHeight});const gap=parseFloat(pcs.gap)||0;const vis=Array.from(parent.children).filter(c=>getComputedStyle(c).display!=='none').length;availH-=gap*Math.max(0,vis-1);availH=Math.max(100,availH);const aspect=CW/CH;let w=pw,h=w/aspect;if(h>availH){h=availH;w=h*aspect}box.style.flex='none';box.style.width=Math.floor(w)+'px';box.style.height=Math.floor(h)+'px';canvas.style.width='100%';canvas.style.height='100%';ctx.imageSmoothingEnabled=false;render()}
+function resize(){if(!canvas)return;canvas.width=CW;canvas.height=CH;const isMobile=window.innerWidth<900;canvas._mobile=isMobile;const box=document.getElementById('canvas-box');const parent=box.parentElement;const pcs=getComputedStyle(parent);const pw=parent.clientWidth-parseFloat(pcs.paddingLeft)-parseFloat(pcs.paddingRight);const ph=parent.clientHeight-parseFloat(pcs.paddingTop)-parseFloat(pcs.paddingBottom);const aspect=CW/CH;let w,h;if(isMobile){w=pw;h=w/aspect;const maxH=Math.min(ph*0.7,window.innerHeight*0.7);if(h>maxH){h=maxH;w=h*aspect}}else{h=ph;w=h*aspect;const minSide=260;if(w>pw-minSide-10){w=pw-minSide-10;h=w/aspect}if(w<200){w=200;h=w/aspect}}box.style.flex='none';box.style.width=Math.max(100,Math.floor(w))+'px';box.style.height=Math.max(100,Math.floor(h))+'px';canvas.style.width='100%';canvas.style.height='100%';ctx.imageSmoothingEnabled=false;render()}
 
 // ===== ITEM MANAGEMENT =====
 function canPlace(c,r,gw,gd,ig,pa){for(let dc=0;dc<gw;dc++)for(let dr=0;dr<gd;dr++){if(!inGrid(c+dc,r+dr))return false;const occ=grid[c+dc][r+dr];if(occ>=0&&occ!==ig){if(pa&&pa.cat==='character'){const oa=getAsset(items[occ].assetId);if(oa.cat==='character'||oa.id==='rug'||oa.id==='cushion')continue}return false}}return true}
