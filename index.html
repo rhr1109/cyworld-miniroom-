@@ -390,7 +390,7 @@ body{
     #bgm-list,#bgm-volume{display:none}
     .room-wrap{padding:8px 10px}
     .room-title-row{padding:4px 0}
-    #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:576/428;min-height:200px}
+    #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:768/428;min-height:200px}
     #edit-bar{flex-wrap:wrap;gap:5px;padding:6px 8px}
     #shop{max-height:none;min-height:auto;flex:0 0 auto}
     #stat-bars{flex-direction:row;flex-wrap:wrap;gap:6px 12px;padding:8px 10px}
@@ -443,7 +443,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-iso-align TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-wide-items TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -601,7 +601,7 @@ body{
 (()=>{
 'use strict';
 
-const TW=48,TH=24,GRID=12,WALL_H=140,CW=576,CH=428,OX=288,OY=140,FS=44/64;
+const TW=48,TH=24,GRID=12,WALL_H=140,CW=768,CH=428,OX=384,OY=140,FS=44/64;
 const P={floor1:'#EDE0CA',floor2:'#E0D2B8',floorEdge:'#D0C0A8',wallBack:'#FFF5F0',wallLeft:'#FFEDE5',wallLine:'rgba(255,160,130,0.18)',baseboard:'#D4A574',baseboardS:'#C08A5A',shadow:'rgba(80,40,20,0.06)',hover:'rgba(255,255,255,0.4)',valid:'rgba(120,255,160,0.35)',invalid:'rgba(255,100,100,0.3)',select:'rgba(255,62,108,0.35)'};
 
 // ===== SPRITE SYSTEM (24x40 - widened for pigtail extras room) =====
@@ -758,18 +758,16 @@ let room={wallpaper:0,floor:0};
 // ===== ASSETS =====
 const ASSETS=[
 {id:'bed',name:'침대',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
-  // wood frame base
+  // wood base frame (bed footprint 32x64x8)
   drawIsoBox(cx,fx,fy,32,64,8,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
-  // mattress on top
+  // mattress (on base top)
   drawIsoBox(cx,fx,fy-8,30,62,6,'#FFF5F5','#FFE5EA','#FFD5DF','rgba(0,0,0,0.05)');
-  // blanket (from middle toward foot), lying on mattress top
-  drawIsoBox(cx,fx+2,fy-14,26,40,2,'#F48FB1','#EC407A','#D81B60','rgba(0,0,0,0.12)');
-  // white blanket fold edge (visible stripe)
-  drawIsoBox(cx,fx-24,fy-14,24,4,2,'#FFF5F5','#FFE5EA','#FFD5DF');
-  // pillow at head (back-left)
-  drawIsoBox(cx,fx-38,fy-22,14,10,5,'#FFFFFF','#EDEDED','#C8C8C8','rgba(0,0,0,0.18)');
-  // pillow pink trim on top
-  drawIsoBox(cx,fx-38,fy-27,11,8,1,'#FFD5DF','#FFC0CD','#FFABBB');
+  // blanket: covers foot half of mattress (u in [0,1], v in [0, 0.6])
+  drawIsoBox(cx,fx,fy-14,30,38,2,'#F48FB1','#EC407A','#D81B60','rgba(0,0,0,0.12)');
+  // pillow at head end (mattress top left area, u=0, v=0.75)
+  drawIsoBox(cx,fx-47,fy-37,22,8,4,'#FFFFFF','#EDEDED','#C8C8C8','rgba(0,0,0,0.2)');
+  // pillow pink trim (sits on pillow top)
+  drawIsoBox(cx,fx-47,fy-41,20,6,1,'#FFD5DF','#FFC0CD','#FFABBB');
 }},
 {id:'desk',name:'책상',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
   // 4 legs (back-left, back-right, front-left, front-right)
@@ -783,42 +781,46 @@ const ASSETS=[
   drawIsoBox(cx,fx,fy-4,2,60,4,'#B8895A','#9A6F44','#7A5438');
 }},
 {id:'chair',name:'의자',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){
-  // 4 legs (back-left, back-right, front-left, front-right). Back corners first for z-order.
-  drawIsoBox(cx,fx-22,fy-11,2,2,14,'#6B4A28','#5A3718','#442810');  // back-right (from viewer) - actually left in iso
-  drawIsoBox(cx,fx+22,fy-11,2,2,14,'#6B4A28','#5A3718','#442810');  // right side
-  drawIsoBox(cx,fx,fy-22,2,2,14,'#6B4A28','#5A3718','#442810');     // back
-  drawIsoBox(cx,fx,fy,2,2,14,'#6B4A28','#5A3718','#442810');        // front
-  // seat (square cushion on top of legs)
-  drawIsoBox(cx,fx,fy-14,22,22,4,'#D88DB0','#B86F92','#985778','rgba(0,0,0,0.15)');
-  // backrest vertical panel at back of seat
-  drawIsoBox(cx,fx-22,fy-29,22,3,16,'#B86F92','#985778','#7A4562','rgba(0,0,0,0.18)');
+  // 4 legs at tile corners (tile is 24x24, seat slightly smaller 22x22)
+  // back leg (tile back corner)
+  drawIsoBox(cx,fx,fy-22,2,2,12,'#6B4A28','#5A3718','#442810');
+  // right & left legs (tile side corners)
+  drawIsoBox(cx,fx+22,fy-11,2,2,12,'#6B4A28','#5A3718','#442810');
+  drawIsoBox(cx,fx-22,fy-11,2,2,12,'#6B4A28','#5A3718','#442810');
+  // seat (sits on leg tops at y=fy-12)
+  drawIsoBox(cx,fx,fy-12,22,22,3,'#D88DB0','#B86F92','#985778','rgba(0,0,0,0.15)');
+  // front leg (drawn after seat for z-order)
+  drawIsoBox(cx,fx,fy,2,2,12,'#6B4A28','#5A3718','#442810');
+  // backrest panel standing on seat top back-left edge, spanning seat width
+  drawIsoBox(cx,fx-22,fy-26,22,3,18,'#B86F92','#985778','#7A4562','rgba(0,0,0,0.2)');
 }},
 {id:'bookshelf',name:'책장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){
-  // main frame body (tall cabinet)
+  // cabinet body (64 deep × 32 wide × 56 tall)
   drawIsoBox(cx,fx,fy,64,32,56,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
-  // books on bottom shelf — cluster spanning shelf width
-  drawIsoBox(cx,fx+10,fy-4,20,24,14,'#E53935','#C62828','#B71C1C','rgba(0,0,0,0.1)');
-  // horizontal divider between bottom and middle shelf
-  drawIsoBox(cx,fx,fy-18,62,30,2,'#A08258','#806540','#604830');
-  // books on middle shelf
-  drawIsoBox(cx,fx+10,fy-22,20,24,14,'#1E88E5','#1565C0','#0D47A1','rgba(0,0,0,0.1)');
-  // horizontal divider between middle and top shelf
-  drawIsoBox(cx,fx,fy-36,62,30,2,'#A08258','#806540','#604830');
-  // books on top shelf
+  // bottom shelf books (inside cabinet at u≈0.2, v≈0.1, base at y_rel≈-8)
+  drawIsoBox(cx,fx+10,fy-8,20,24,14,'#E53935','#C62828','#B71C1C','rgba(0,0,0,0.1)');
+  // middle shelf divider plank
+  drawIsoBox(cx,fx,fy-22,62,30,2,'#A08258','#806540','#604830');
+  // middle shelf books (base at y_rel=-24)
+  drawIsoBox(cx,fx+10,fy-24,20,24,14,'#1E88E5','#1565C0','#0D47A1','rgba(0,0,0,0.1)');
+  // top shelf divider plank
+  drawIsoBox(cx,fx,fy-38,62,30,2,'#A08258','#806540','#604830');
+  // top shelf books (base at y_rel=-40)
   drawIsoBox(cx,fx+10,fy-40,20,24,14,'#43A047','#2E7D32','#1B5E20','rgba(0,0,0,0.1)');
 }},
 {id:'sofa',name:'소파',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
-  // base block (whole sofa body, low)
+  // sofa body (32 deep × 64 wide × 10 tall)
   drawIsoBox(cx,fx,fy,32,64,10,'#6B8F85','#5B7F75','#4A6E65','rgba(0,0,0,0.15)');
-  // backrest — tall panel along back-left edge of sofa
-  drawIsoBox(cx,fx-58,fy-29,26,6,18,'#98D8C8','#80C8B0','#70B8A0','rgba(0,0,0,0.1)');
-  // left armrest — at head end
-  drawIsoBox(cx,fx-58,fy-13,6,6,12,'#90D0C0','#78C0A8','#68B098');
-  // right armrest — at foot end
-  drawIsoBox(cx,fx,fy-7,6,6,12,'#90D0C0','#78C0A8','#68B098');
-  // two seat cushions side by side (on top of base)
-  drawIsoBox(cx,fx-8,fy-10,20,24,3,'#A8E0D0','#88C8B8','#78B8A8');
-  drawIsoBox(cx,fx-36,fy-24,20,24,3,'#A8E0D0','#88C8B8','#78B8A8');
+  // backrest — tall panel at back-left edge of body top, spans sofa width
+  drawIsoBox(cx,fx,fy-10,32,6,18,'#98D8C8','#80C8B0','#70B8A0','rgba(0,0,0,0.12)');
+  // left armrest (at head end — far lw corner)
+  drawIsoBox(cx,fx-58,fy-19,4,6,14,'#98D8C8','#80C8B0','#70B8A0');
+  // right armrest (at foot end — front)
+  drawIsoBox(cx,fx,fy-3,4,6,14,'#98D8C8','#80C8B0','#70B8A0');
+  // seat cushion on top of body
+  drawIsoBox(cx,fx-4,fy-10,26,54,3,'#A8E0D0','#88C8B8','#78B8A8','rgba(0,0,0,0.08)');
+  // seat division (subtle line between 2 cushions)
+  drawIsoBox(cx,fx-30,fy-23,26,2,3,'#78B8A8','#68A898','#588898');
 }},
 {id:'wardrobe',name:'옷장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){
   // main body
