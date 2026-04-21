@@ -390,7 +390,7 @@ body{
     #bgm-list,#bgm-volume{display:none}
     .room-wrap{padding:8px 10px}
     .room-title-row{padding:4px 0}
-    #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:768/428;min-height:200px}
+    #canvas-box{width:100%;height:auto;max-height:70vh;flex:0 0 auto;margin:0 auto;aspect-ratio:768/480;min-height:200px}
     #edit-bar{flex-wrap:wrap;gap:5px;padding:6px 8px}
     #shop{max-height:none;min-height:auto;flex:0 0 auto}
     #stat-bars{flex-direction:row;flex-wrap:wrap;gap:6px 12px;padding:8px 10px}
@@ -443,7 +443,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-items-restored TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-taller-canvas TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -601,7 +601,7 @@ body{
 (()=>{
 'use strict';
 
-const TW=48,TH=24,GRID=12,WALL_H=140,CW=768,CH=428,OX=384,OY=140,FS=44/64;
+const TW=48,TH=24,GRID=12,WALL_H=140,CW=768,CH=480,OX=384,OY=140,FS=44/64;
 const P={floor1:'#EDE0CA',floor2:'#E0D2B8',floorEdge:'#D0C0A8',wallBack:'#FFF5F0',wallLeft:'#FFEDE5',wallLine:'rgba(255,160,130,0.18)',baseboard:'#D4A574',baseboardS:'#C08A5A',shadow:'rgba(80,40,20,0.06)',hover:'rgba(255,255,255,0.4)',valid:'rgba(120,255,160,0.35)',invalid:'rgba(255,100,100,0.3)',select:'rgba(255,62,108,0.35)'};
 
 // ===== SPRITE SYSTEM (24x40 - widened for pigtail extras room) =====
