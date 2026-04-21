@@ -384,7 +384,7 @@ body{
     #panel-status{order:5;background:#FFF;border-bottom:1px solid var(--border3);padding:10px 12px}
     #panel-music{order:6;background:#FFF8FA;border-bottom:1px solid var(--border3);padding:10px 12px}
     #panel-wave{order:6.5;background:#FFF;border-bottom:1px solid var(--border3);padding:10px 12px}
-    #panel-docs{order:6.7;background:#FFF8FA;border-bottom:1px solid var(--border3);padding:10px 12px}
+    #panel-docs{display:none}
     #cy-right{order:7;border-left:none;border-top:2px solid var(--pink-l);width:100%}
     #panel-guestbook{order:7.5}
     #bgm-list,#bgm-volume{display:none}
@@ -443,7 +443,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-wide-room TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-expanded-persona TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -601,7 +601,7 @@ body{
 (()=>{
 'use strict';
 
-const TW=64,TH=24,GRID=12,WALL_H=140,CW=768,CH=428,OX=384,OY=140,FS=38/64;
+const TW=64,TH=24,GRID=12,WALL_H=140,CW=768,CH=428,OX=384,OY=140,FS=50/64;
 const P={floor1:'#EDE0CA',floor2:'#E0D2B8',floorEdge:'#D0C0A8',wallBack:'#FFF5F0',wallLeft:'#FFEDE5',wallLine:'rgba(255,160,130,0.18)',baseboard:'#D4A574',baseboardS:'#C08A5A',shadow:'rgba(80,40,20,0.06)',hover:'rgba(255,255,255,0.4)',valid:'rgba(120,255,160,0.35)',invalid:'rgba(255,100,100,0.3)',select:'rgba(255,62,108,0.35)'};
 
 // ===== SPRITE SYSTEM (24x40 - widened for pigtail extras room) =====
@@ -661,6 +661,13 @@ const HAIR_ITEMS=[
 {id:'h7',name:'긴 포니테일',c:'#8B5A2B',extra:[[4,20],[4,21],[4,22],[4,23],[5,20],[5,21],[5,22],[5,23],[6,19,'#E86B9D'],[6,20,'#E86B9D'],[6,21,'#E86B9D'],[6,22,'#E86B9D'],[6,23,'#E86B9D'],[6,24,'#E86B9D'],[7,19,'#E86B9D'],[7,20,'#E86B9D'],[7,21,'#E86B9D'],[7,22,'#E86B9D'],[7,23,'#E86B9D'],[7,24,'#E86B9D'],[8,21],[8,22],[8,23],[9,21],[9,22],[9,23],[10,21],[10,22],[10,23],[11,20],[11,21],[11,22],[12,20],[12,21],[12,22],[13,19],[13,20],[13,21],[14,19],[14,20],[15,18],[15,19],[16,17],[16,18],[17,16],[17,17],[18,15],[18,16],[19,15],[20,14]]},
 {id:'h8',name:'양갈래 트윈',c:'#6B4423',extra:[[10,1],[10,2],[10,3],[10,4],[11,0,'#5DA0E0'],[11,1,'#5DA0E0'],[11,2,'#5DA0E0'],[11,3,'#5DA0E0'],[11,4,'#5DA0E0'],[11,5,'#5DA0E0'],[12,0,'#5DA0E0'],[12,1,'#5DA0E0'],[12,2,'#5DA0E0'],[12,3,'#5DA0E0'],[12,4,'#5DA0E0'],[12,5,'#5DA0E0'],[13,1],[13,2],[13,3],[14,1],[14,2],[14,3],[15,2],[15,3],[16,2],[16,3],[17,2],[17,3],[18,3],[19,3],[20,3],[21,3],[22,4],[23,4],[10,19],[10,20],[10,21],[10,22],[11,18,'#5DA0E0'],[11,19,'#5DA0E0'],[11,20,'#5DA0E0'],[11,21,'#5DA0E0'],[11,22,'#5DA0E0'],[11,23,'#5DA0E0'],[12,18,'#5DA0E0'],[12,19,'#5DA0E0'],[12,20,'#5DA0E0'],[12,21,'#5DA0E0'],[12,22,'#5DA0E0'],[12,23,'#5DA0E0'],[13,20],[13,21],[13,22],[14,20],[14,21],[14,22],[15,20],[15,21],[16,20],[16,21],[17,20],[17,21],[18,20],[19,20],[20,20],[21,20],[22,19],[23,19]]},
 {id:'h9',name:'웨이브 보브',c:'#C2A780',extra:[[7,2],[8,3],[9,2],[10,3],[11,2],[12,3],[7,21],[8,20],[9,21],[10,20],[11,21],[12,20]]},
+{id:'h10',name:'빨강 단발',c:'#D84315'},
+{id:'h11',name:'보라 장발',c:'#9575CD',extra:[[7,2],[8,2],[9,2],[10,2],[11,2],[12,2],[13,2],[14,2],[15,3],[7,21],[8,21],[9,21],[10,21],[11,21],[12,21],[13,21],[14,21],[15,20]]},
+{id:'h12',name:'은발 숏',c:'#B0BEC5'},
+{id:'h13',name:'올림머리',c:'#6D4C41',rows:{0:'.........HHHHHH.........',1:'........HHHHHHHH........',2:'........HHHHHHHH........'}},
+{id:'h14',name:'빨간 트윈',c:'#E53935',extra:[[4,0],[4,1],[5,0],[5,1],[6,0],[6,1],[7,0],[7,1],[8,1],[9,1],[10,2],[4,22],[4,23],[5,22],[5,23],[6,22],[6,23],[7,22],[7,23],[8,22],[9,22],[10,21]]},
+{id:'h15',name:'오렌지 곱슬',c:'#FB8C00',extra:[[7,3],[8,2],[9,3],[10,2],[11,3],[7,20],[8,21],[9,20],[10,21],[11,20]]},
+{id:'h16',name:'블랙 포니',c:'#212121',extra:[[4,20],[4,21],[5,20],[5,21],[6,20],[6,21],[7,20],[7,21],[8,21],[9,22],[10,22],[11,23],[12,23],[13,24],[14,24]]},
 ];
 const TOP_ITEMS=[
 {id:'t0',name:'기본 티셔츠',c:'#FF7043',s:'#E64A19'},
@@ -672,6 +679,14 @@ const TOP_ITEMS=[
 {id:'t6',name:'노란 원피스',c:'#FFD54F',s:'#FFC107',rows:{27:'.....TTTTTTTTTT.....',28:'.....TTTTTTTTTT.....',29:'....TTTTTTTTTTTT....',30:'....TTTTTTTTTTTT....',31:'....tttttttttttt....',32:'......aaa..aaa......',33:'......aaa..aaa......',34:'......aaa..aaa......',35:'......aaa..aaa......'}},
 {id:'t7',name:'보라 크롭',c:'#CE93D8',s:'#AB47BC',rows:{23:'....a.aaaaaaaa.a....',24:'....a.aaaaaaaa.a....',25:'.....a.aaaaaa.a.....',26:'.....a.aaaaaa.a.....'}},
 {id:'t8',name:'빨간 자켓',c:'#D32F2F',s:'#B71C1C',rows:{21:'....a.WTTTTTTW.a....',22:'....a.WTTWWTTW.a....',23:'....a.WWWWWWWW.a....',24:'....a.WTTWWTTW.a....'},xc:{W:'#FAFAFA'}},
+{id:'t9',name:'네이비 니트',c:'#1A237E',s:'#0D1655'},
+{id:'t10',name:'체크 셔츠',c:'#FAFAFA',s:'#E0E0E0',rows:{21:'....a.TcTcTcTc.a....',22:'....a.cTcTcTcT.a....',23:'....a.TcTcTcTc.a....',24:'....a.cTcTcTcT.a....'},xc:{c:'#E53935'}},
+{id:'t11',name:'베이지 가디건',c:'#D7CCC8',s:'#BCAAA4',rows:{21:'....a.TcTTTTcT.a....',22:'....a.TcTTTTcT.a....',23:'....a.TcTTTTcT.a....'},xc:{c:'#8D6E63'}},
+{id:'t12',name:'블랙 후드',c:'#212121',s:'#000',rows:{20:'........TTTTTTTT........',21:'....a.TccccccccT.a....'},xc:{c:'#424242'}},
+{id:'t13',name:'민트 스웨터',c:'#80CBC4',s:'#26A69A'},
+{id:'t14',name:'보라 원피스',c:'#9575CD',s:'#5E35B1',rows:{27:'.....TTTTTTTTTT.....',28:'.....TTTTTTTTTT.....',29:'....TTTTTTTTTTTT....',30:'....TTTTTTTTTTTT....',31:'....tttttttttttt....',32:'......aaa..aaa......',33:'......aaa..aaa......',34:'......aaa..aaa......',35:'......aaa..aaa......'}},
+{id:'t15',name:'핑크 튜브',c:'#F8BBD0',s:'#F06292',rows:{22:'........TTTTTTTT........',23:'........TTTTTTTT........'}},
+{id:'t16',name:'레몬 티',c:'#FFF176',s:'#FDD835'},
 ];
 const BOT_ITEMS=[
 {id:'b0',name:'청바지',c:'#5C6BC0',s:'#3F51B5'},
@@ -680,6 +695,13 @@ const BOT_ITEMS=[
 {id:'b3',name:'검정 스키니',c:'#424242',s:'#212121'},
 {id:'b4',name:'체크 치마',c:'#EF5350',s:'#C62828',rows:{27:'......BsBsBsBs......',28:'.....BsBsBsBsBs.....',29:'.....sBsBsBsBsB.....',30:'.....BsBsBsBsBs.....',31:'......aaa..aaa......',32:'......aaa..aaa......',33:'......aaa..aaa......',34:'......aaa..aaa......',35:'......aaa..aaa......',36:'......aaa..aaa......',37:'......aaa..aaa......'},xc:{s:'#FFFFFF'}},
 {id:'b5',name:'데님 롱스커트',c:'#78909C',s:'#546E7A',rows:{27:'......BBBBBBBB......',28:'......BBBBBBBB......',29:'......BBBBBBBB......',30:'......BBBBBBBB......',31:'......BBBBBBBB......',32:'......BBBBBBBB......',33:'......BBBBBBBB......',34:'......BBBBBBBB......',35:'......BBBBBBBB......',36:'......BBBBBBBB......',37:'......BBBBBBBB......'}},
+{id:'b6',name:'베이지 팬츠',c:'#D7CCC8',s:'#A1887F'},
+{id:'b7',name:'민트 치마',c:'#80CBC4',s:'#26A69A',rows:{27:'......BBBBBBBB......',28:'.....BBBBBBBBBB.....',29:'.....BBBBBBBBBB.....',30:'.....BBBBBBBBBB.....',31:'......aaa..aaa......',32:'......aaa..aaa......',33:'......aaa..aaa......',34:'......aaa..aaa......',35:'......aaa..aaa......'}},
+{id:'b8',name:'조거팬츠',c:'#546E7A',s:'#37474F'},
+{id:'b9',name:'노란 치마',c:'#FFD54F',s:'#FFA000',rows:{27:'......BBBBBBBB......',28:'.....BBBBBBBBBB.....',29:'.....BBBBBBBBBB.....',30:'.....BBBBBBBBBB.....',31:'......aaa..aaa......',32:'......aaa..aaa......',33:'......aaa..aaa......',34:'......aaa..aaa......',35:'......aaa..aaa......'}},
+{id:'b10',name:'와이드 팬츠',c:'#7B1FA2',s:'#4A148C',rows:{31:'......BBB..BBB......',32:'.....BBBB..BBBB.....',33:'.....BBBB..BBBB.....',34:'.....BBBB..BBBB.....',35:'.....BBBB..BBBB.....',36:'.....bbbb..bbbb.....',37:'.....bbbb..bbbb.....'}},
+{id:'b11',name:'빨간 스커트',c:'#E53935',s:'#B71C1C',rows:{27:'......BBBBBBBB......',28:'.....BBBBBBBBBB.....',29:'.....BBBBBBBBBB.....',30:'.....BBBBBBBBBB.....',31:'......aaa..aaa......',32:'......aaa..aaa......',33:'......aaa..aaa......',34:'......aaa..aaa......',35:'......aaa..aaa......'}},
+{id:'b12',name:'카키 롱스커트',c:'#8D6E63',s:'#5D4037',rows:{27:'......BBBBBBBB......',28:'......BBBBBBBB......',29:'......BBBBBBBB......',30:'......BBBBBBBB......',31:'......BBBBBBBB......',32:'......BBBBBBBB......',33:'......BBBBBBBB......',34:'......BBBBBBBB......',35:'......BBBBBBBB......',36:'......BBBBBBBB......',37:'......BBBBBBBB......'}},
 ];
 const SHOE_ITEMS=[
 {id:'s0',name:'흰 운동화',c:'#FAFAFA'},
@@ -687,6 +709,11 @@ const SHOE_ITEMS=[
 {id:'s2',name:'핑크 슬리퍼',c:'#F48FB1'},
 {id:'s3',name:'검정 로퍼',c:'#424242'},
 {id:'s4',name:'빨간 운동화',c:'#EF5350'},
+{id:'s5',name:'파란 운동화',c:'#42A5F5'},
+{id:'s6',name:'노란 샌들',c:'#FFD54F'},
+{id:'s7',name:'민트 슬립온',c:'#80CBC4'},
+{id:'s8',name:'검정 부츠',c:'#212121',rows:{36:'......FFF..FFF......',37:'......FFF..FFF......',38:'.....FFFF..FFFF.....',39:'.....FFFF..FFFF.....'}},
+{id:'s9',name:'하늘 크록스',c:'#81D4FA'},
 ];
 let outfit={hair:0,top:0,bottom:0,shoes:0};
 
@@ -724,8 +751,8 @@ const PETS={cat:{sprite:['..CC.CC.','.CCCCCC.','.CeeCee.','.CCCCCC.','..CnnC..',
 function drawPet(cx,cX,bY,pet){const ps=2,d=PETS[pet],w=8,h=d.sprite.length,ox=Math.round(cX-w*ps/2),oy=Math.round(bY-h*ps);d.sprite.forEach((row,r)=>{for(let c=0;c<row.length;c++){const ch=row[c];if(ch!=='.'&&d.colors[ch]){cx.fillStyle=d.colors[ch];cx.fillRect(ox+c*ps,oy+r*ps,ps,ps)}}})}
 
 // ===== WALLPAPERS & FLOORS =====
-const WALLPAPERS=[{id:'w0',name:'핑크 하트',back:'#FFEBEE',left:'#FFCDD2',accent:'rgba(244,143,177,0.3)',pattern:'heart'},{id:'w1',name:'민트 그린',back:'#E8F5E9',left:'#DCEDC8',accent:'rgba(120,180,120,0.15)',pattern:'dots'},{id:'w2',name:'하늘색',back:'#E3F2FD',left:'#BBDEFB',accent:'rgba(100,160,210,0.13)',pattern:'dots'},{id:'w3',name:'베이지',back:'#FFF8E7',left:'#FFECB3',accent:'rgba(200,160,80,0.13)',pattern:'dots'},{id:'w4',name:'라벤더',back:'#F3E5F5',left:'#E1BEE7',accent:'rgba(170,100,180,0.13)',pattern:'dots'},{id:'w5',name:'레몬',back:'#FFFDE7',left:'#FFF9C4',accent:'rgba(220,180,40,0.15)',pattern:'dots'},{id:'w6',name:'기본 핑크',back:'#FFF5F0',left:'#FFEDE5',accent:'rgba(255,170,140,0.13)',pattern:'dots'},{id:'w7',name:'별이 빛나는',back:'#283593',left:'#1A237E',accent:'#FFEB3B',pattern:'star'},{id:'w8',name:'격자',back:'#FAFAFA',left:'#F5F5F5',accent:'rgba(180,180,180,0.3)',pattern:'grid'},{id:'w9',name:'줄무늬',back:'#FFF0F0',left:'#FFE6E6',accent:'rgba(255,140,140,0.2)',pattern:'stripe'},{id:'w10',name:'땡땡이',back:'#FFCDD2',left:'#FFB6BC',accent:'#FFFFFF',pattern:'bigdot'},{id:'w11',name:'밤하늘',back:'#1A237E',left:'#0D1854',accent:'#FFFFFF',pattern:'star'}];
-const FLOORS=[{id:'f0',name:'나무 바닥',c1:'#EDE0CA',c2:'#E0D2B8',edge:'#D0C0A8'},{id:'f1',name:'어두운 나무',c1:'#8D6E63',c2:'#795548',edge:'#5D4037'},{id:'f2',name:'대리석',c1:'#FAFAFA',c2:'#F0F0F0',edge:'#D8D8D8'},{id:'f3',name:'잔디',c1:'#A5D6A7',c2:'#81C784',edge:'#66BB6A'},{id:'f4',name:'벽돌',c1:'#D7572F',c2:'#BF360C',edge:'#8B2500'},{id:'f5',name:'핑크 타일',c1:'#FCE4EC',c2:'#F8BBD0',edge:'#F48FB1'},{id:'f6',name:'하늘 타일',c1:'#E1F5FE',c2:'#B3E5FC',edge:'#81D4FA'},{id:'f7',name:'레드 카펫',c1:'#EF5350',c2:'#E53935',edge:'#C62828'},{id:'f8',name:'바다',c1:'#4FC3F7',c2:'#29B6F6',edge:'#0288D1'},{id:'f9',name:'체크',c1:'#FFFFFF',c2:'#212121',edge:'#666666'},{id:'f10',name:'민트',c1:'#B2DFDB',c2:'#80CBC4',edge:'#4DB6AC'},{id:'f11',name:'골드',c1:'#FFE082',c2:'#FFD54F',edge:'#FFB300'}];
+const WALLPAPERS=[{id:'w0',name:'핑크 하트',back:'#FFEBEE',left:'#FFCDD2',accent:'rgba(244,143,177,0.3)',pattern:'heart'},{id:'w1',name:'민트 그린',back:'#E8F5E9',left:'#DCEDC8',accent:'rgba(120,180,120,0.15)',pattern:'dots'},{id:'w2',name:'하늘색',back:'#E3F2FD',left:'#BBDEFB',accent:'rgba(100,160,210,0.13)',pattern:'dots'},{id:'w3',name:'베이지',back:'#FFF8E7',left:'#FFECB3',accent:'rgba(200,160,80,0.13)',pattern:'dots'},{id:'w4',name:'라벤더',back:'#F3E5F5',left:'#E1BEE7',accent:'rgba(170,100,180,0.13)',pattern:'dots'},{id:'w5',name:'레몬',back:'#FFFDE7',left:'#FFF9C4',accent:'rgba(220,180,40,0.15)',pattern:'dots'},{id:'w6',name:'기본 핑크',back:'#FFF5F0',left:'#FFEDE5',accent:'rgba(255,170,140,0.13)',pattern:'dots'},{id:'w7',name:'별이 빛나는',back:'#283593',left:'#1A237E',accent:'#FFEB3B',pattern:'star'},{id:'w8',name:'격자',back:'#FAFAFA',left:'#F5F5F5',accent:'rgba(180,180,180,0.3)',pattern:'grid'},{id:'w9',name:'줄무늬',back:'#FFF0F0',left:'#FFE6E6',accent:'rgba(255,140,140,0.2)',pattern:'stripe'},{id:'w10',name:'땡땡이',back:'#FFCDD2',left:'#FFB6BC',accent:'#FFFFFF',pattern:'bigdot'},{id:'w11',name:'밤하늘',back:'#1A237E',left:'#0D1854',accent:'#FFFFFF',pattern:'star'},{id:'w12',name:'우주',back:'#1A1033',left:'#0D0622',accent:'#FFEB3B',pattern:'star'},{id:'w13',name:'코랄 하트',back:'#FFE0E0',left:'#FFC5C5',accent:'rgba(229,115,115,0.3)',pattern:'heart'},{id:'w14',name:'모던 그레이',back:'#ECEFF1',left:'#CFD8DC',accent:'rgba(120,144,156,0.25)',pattern:'grid'},{id:'w15',name:'블루 체크',back:'#E8F4FD',left:'#C5E1F5',accent:'rgba(66,165,245,0.25)',pattern:'grid'},{id:'w16',name:'피치',back:'#FFE4D1',left:'#FFCCAB',accent:'rgba(255,152,100,0.2)',pattern:'dots'},{id:'w17',name:'민트 체크',back:'#E0F2F1',left:'#B2DFDB',accent:'rgba(77,182,172,0.25)',pattern:'grid'},{id:'w18',name:'로즈 벽지',back:'#FCE4EC',left:'#F8BBD0',accent:'rgba(233,30,99,0.25)',pattern:'bigdot'},{id:'w19',name:'라임 줄무늬',back:'#F1F8E9',left:'#DCEDC8',accent:'rgba(139,195,74,0.3)',pattern:'stripe'},{id:'w20',name:'스모키 퍼플',back:'#2E1D4F',left:'#1E1235',accent:'#CE93D8',pattern:'star'},{id:'w21',name:'카페 브라운',back:'#D7CCC8',left:'#BCAAA4',accent:'rgba(93,64,55,0.3)',pattern:'stripe'},{id:'w22',name:'아쿠아 하트',back:'#E0F7FA',left:'#B2EBF2',accent:'rgba(38,198,218,0.35)',pattern:'heart'},{id:'w23',name:'선셋',back:'#FFE0B2',left:'#FFCCBC',accent:'rgba(255,112,67,0.25)',pattern:'dots'}];
+const FLOORS=[{id:'f0',name:'나무 바닥',c1:'#EDE0CA',c2:'#E0D2B8',edge:'#D0C0A8'},{id:'f1',name:'어두운 나무',c1:'#8D6E63',c2:'#795548',edge:'#5D4037'},{id:'f2',name:'대리석',c1:'#FAFAFA',c2:'#F0F0F0',edge:'#D8D8D8'},{id:'f3',name:'잔디',c1:'#A5D6A7',c2:'#81C784',edge:'#66BB6A'},{id:'f4',name:'벽돌',c1:'#D7572F',c2:'#BF360C',edge:'#8B2500'},{id:'f5',name:'핑크 타일',c1:'#FCE4EC',c2:'#F8BBD0',edge:'#F48FB1'},{id:'f6',name:'하늘 타일',c1:'#E1F5FE',c2:'#B3E5FC',edge:'#81D4FA'},{id:'f7',name:'레드 카펫',c1:'#EF5350',c2:'#E53935',edge:'#C62828'},{id:'f8',name:'바다',c1:'#4FC3F7',c2:'#29B6F6',edge:'#0288D1'},{id:'f9',name:'체크',c1:'#FFFFFF',c2:'#212121',edge:'#666666'},{id:'f10',name:'민트',c1:'#B2DFDB',c2:'#80CBC4',edge:'#4DB6AC'},{id:'f11',name:'골드',c1:'#FFE082',c2:'#FFD54F',edge:'#FFB300'},{id:'f12',name:'보라 카펫',c1:'#CE93D8',c2:'#AB47BC',edge:'#7B1FA2'},{id:'f13',name:'모래',c1:'#FFF3C4',c2:'#FFECB3',edge:'#FFE082'},{id:'f14',name:'파스텔 그린',c1:'#DCEDC8',c2:'#C5E1A5',edge:'#AED581'},{id:'f15',name:'블랙 타일',c1:'#424242',c2:'#303030',edge:'#1A1A1A'},{id:'f16',name:'크림 나무',c1:'#FFF8E7',c2:'#FFECB3',edge:'#E8D5A0'},{id:'f17',name:'무지개',c1:'#FFD6E0',c2:'#D4F1F9',edge:'#FCE38A'},{id:'f18',name:'우주',c1:'#311B92',c2:'#1A0E5F',edge:'#0D0640'},{id:'f19',name:'아이스',c1:'#E0F7FA',c2:'#B2EBF2',edge:'#4DD0E1'},{id:'f20',name:'체리 우드',c1:'#BA6B57',c2:'#A05546',edge:'#7E3E32'}];
 let room={wallpaper:0,floor:0};
 
 // ===== ASSETS =====
