@@ -435,7 +435,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-bed-revert TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-wander-bounds TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -779,7 +779,7 @@ function startAnimation(){if(animInterval)return;animInterval=setInterval(()=>{a
 function updateWalks(){items.forEach(it=>{if(it.walk){it.walk.t+=0.18;if(it.walk.t>=1)it.walk=null}})}
 function canWalkTo(col,row,selfIdx){if(!inGrid(col,row))return false;const idx=grid[col][row];if(idx<0||idx===selfIdx)return true;const a=getAsset(items[idx].assetId);return a.cat==='character'||a.id==='rug'||a.id==='cushion'}
 function startWalk(idx,nc,nr){const it=items[idx];if(it.col===nc&&it.row===nr)return false;if(!canWalkTo(nc,nr,idx))return false;if(grid[it.col][it.row]===idx)grid[it.col][it.row]=-1;const prev=grid[nc][nr];grid[nc][nr]=idx;it.walk={srcCol:it.col,srcRow:it.row,t:0};it.col=nc;it.row=nr;if(prev>=0&&prev!==idx){const other=items[prev];if(other&&grid[other.col][other.row]!==prev)grid[other.col][other.row]=prev}return true}
-function maybeWanderPets(){items.forEach((it,idx)=>{const a=getAsset(it.assetId);if(!a||a.cat!=='character')return;if(it.walk||Math.random()<0.6)return;const dirs=[[0,1],[1,0],[-1,0],[0,-1]].sort(()=>Math.random()-0.5);for(const[dc,dr]of dirs){if(startWalk(idx,it.col+dc,it.row+dr))break}})}
+function maybeWanderPets(){const MIN=1,MAX=GRID-2;items.forEach((it,idx)=>{const a=getAsset(it.assetId);if(!a||a.cat!=='character')return;if(it.walk||Math.random()<0.6)return;const dirs=[[0,1],[1,0],[-1,0],[0,-1]].sort(()=>Math.random()-0.5);for(const[dc,dr]of dirs){const nc=it.col+dc,nr=it.row+dr;if(nc<MIN||nc>MAX||nr<MIN||nr>MAX)continue;if(startWalk(idx,nc,nr))break}})}
 
 // ===== PARTICLES =====
 let particles=[];
