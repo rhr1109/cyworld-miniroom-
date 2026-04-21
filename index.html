@@ -443,7 +443,7 @@ body{
     <header id="cy-top">
         <span class="cy-logo">cy</span>
         <span class="cy-page-title">나의 미니홈피 ♥ 미니룸</span>
-        <span class="cy-session">v-expanded-persona TODAY <b>128</b> | TOTAL <b>5,432</b></span>
+        <span class="cy-session">v-item-redesign TODAY <b>128</b> | TOTAL <b>5,432</b></span>
     </header>
 
     <aside id="cy-left">
@@ -758,35 +758,284 @@ let room={wallpaper:0,floor:0};
 // ===== ASSETS =====
 const ASSETS=[
 {id:'bed',name:'침대',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
-  drawIsoBox(cx,fx,fy,32,64,10,'#9D7F5A','#846A47','#6B5538','rgba(0,0,0,0.1)');
-  drawIsoBox(cx,fx,fy-10,30,62,8,'#FFF0F5','#FFE0EA','#FFD0DF','rgba(0,0,0,0.04)');
-  drawIsoBox(cx,fx+8,fy-18,20,38,2,'#F48FB1','#EC407A','#D81B60','rgba(0,0,0,0.08)');
-  drawIsoBox(cx,fx-26,fy-38,12,8,5,'#FFFFFF','#EAEAEA','#C8C8C8','rgba(0,0,0,0.22)');
-  drawIsoBox(cx,fx-26,fy-38-5,9,6,1,'#FFE0E8','#FFD0D8','#FFC0C8','rgba(0,0,0,0.1)');
+  // base frame (dark wood)
+  drawIsoBox(cx,fx,fy,32,64,8,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
+  // mattress (white)
+  drawIsoBox(cx,fx-1,fy-8,30,62,8,'#FFF5F5','#FFE5EA','#FFD5DF','rgba(0,0,0,0.05)');
+  // headboard (tall wood panel at back/head end)
+  drawIsoBox(cx,fx-58,fy-30,28,4,22,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.1)');
+  // pillow at head
+  drawIsoBox(cx,fx-40,fy-18,18,14,5,'#FFFFFF','#EDEDED','#D8D8D8','rgba(0,0,0,0.2)');
+  drawIsoBox(cx,fx-40,fy-23,14,10,1,'#FFE0E8','#FFD0D8','#FFC0C8','rgba(0,0,0,0.1)');
+  // blanket covering lower 2/3
+  drawIsoBox(cx,fx+2,fy-16,26,36,3,'#F48FB1','#EC407A','#D81B60','rgba(0,0,0,0.1)');
+  // blanket edge fold
+  drawIsoBox(cx,fx-22,fy-18,8,30,1,'#FFE0EA','#FFD0DF','#FFC0D4');
 }},
-{id:'desk',name:'책상',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy,3,3,22,'#B08050','#9A7040','#866035');drawIsoBox(cx,fx+28-58,fy-14-29,3,3,22,'#B08050','#9A7040','#866035');drawIsoBox(cx,fx+28,fy-14,3,3,22,'#B08050','#9A7040','#866035');drawIsoBox(cx,fx-58,fy-29,3,3,22,'#B08050','#9A7040','#866035');drawIsoBox(cx,fx,fy-22,32,64,4,'#D4B896','#BEA280','#A88C6A','rgba(0,0,0,0.08)')}},
+{id:'desk',name:'책상',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
+  // 4 legs at corners of desk top
+  drawIsoBox(cx,fx-2,fy-2,3,3,20,'#8B6F47','#6B5437','#4A3A27');
+  drawIsoBox(cx,fx-60,fy-32,3,3,20,'#8B6F47','#6B5437','#4A3A27');
+  drawIsoBox(cx,fx+28,fy-16,3,3,20,'#8B6F47','#6B5437','#4A3A27');
+  drawIsoBox(cx,fx-30,fy-46,3,3,20,'#8B6F47','#6B5437','#4A3A27');
+  // desk top (wood)
+  drawIsoBox(cx,fx,fy-20,30,62,3,'#D4A574','#B8895A','#9A6F44','rgba(0,0,0,0.12)');
+  // drawer (hanging under desk top, front side)
+  drawIsoBox(cx,fx-4,fy-10,6,24,8,'#C8956A','#A87850','#8A5E38','rgba(0,0,0,0.15)');
+  // drawer handle
+  drawIsoBox(cx,fx-3,fy-6,1,4,1,'#4A3525','#3A2515','#2A1A05');
+}},
 {id:'chair',name:'의자',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){
-  drawIsoBox(cx,fx,fy,2,2,14,'#725028','#5A3D1F','#442D14');
-  drawIsoBox(cx,fx+20,fy-10,2,2,14,'#725028','#5A3D1F','#442D14');
-  drawIsoBox(cx,fx-20,fy-10,2,2,14,'#725028','#5A3D1F','#442D14');
-  drawIsoBox(cx,fx,fy-20,2,2,14,'#725028','#5A3D1F','#442D14');
-  drawIsoBox(cx,fx,fy-14,22,22,3,'#B0C4DE','#9AB0CA','#849CB6','rgba(0,0,0,0.1)');
-  drawIsoBox(cx,fx-22,fy-28,22,2,20,'#A0B5CD','#88A0B8','#708DA8','rgba(0,0,0,0.2)');
+  // 4 legs (back ones drawn first for z-order)
+  drawIsoBox(cx,fx-24,fy-12,2,2,14,'#6B4A28','#5A3718','#442810');
+  drawIsoBox(cx,fx+24,fy-12,2,2,14,'#6B4A28','#5A3718','#442810');
+  drawIsoBox(cx,fx,fy-24,2,2,14,'#6B4A28','#5A3718','#442810');
+  drawIsoBox(cx,fx,fy,2,2,14,'#6B4A28','#5A3718','#442810');
+  // seat cushion
+  drawIsoBox(cx,fx,fy-14,24,24,4,'#D88DB0','#B86F92','#985778','rgba(0,0,0,0.1)');
+  // backrest (tall narrow, along back-left edge)
+  drawIsoBox(cx,fx-22,fy-30,20,3,18,'#B86F92','#985778','#7A4562','rgba(0,0,0,0.2)');
+  // backrest top bar
+  drawIsoBox(cx,fx-22,fy-46,20,3,2,'#D88DB0','#B86F92','#985778');
 }},
-{id:'bookshelf',name:'책장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){drawIsoBox(cx,fx,fy,64,32,56,'#A0825C','#8B7050','#765E44','rgba(0,0,0,0.1)');drawIsoBox(cx,fx,fy-18,62,30,2,'#BEA07A','#A88A64','#92744E');drawIsoBox(cx,fx,fy-36,62,30,2,'#BEA07A','#A88A64','#92744E');drawIsoBox(cx,fx+10,fy-7-20,20,24,14,'#E86050','#D05040','#B84030');drawIsoBox(cx,fx+32,fy-18-20,14,22,14,'#5088C0','#4078B0','#3068A0');drawIsoBox(cx,fx+8,fy-6-38,24,20,14,'#60A060','#509050','#408040')}},
-{id:'sofa',name:'소파',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy,32,64,14,'#88C8B8','#78B8A8','#68A898','rgba(0,0,0,0.06)');drawIsoBox(cx,fx+28-58,fy-14-29-14,26,52,18,'#98D8C8','#80C8B0','#70B8A0','rgba(0,0,0,0.06)');drawIsoBox(cx,fx-56,fy-28-14,24,6,16,'#90D0C0','#78C0A8','#68B098');drawIsoBox(cx,fx,fy-14,6,6,16,'#90D0C0','#78C0A8','#68B098')}},
-{id:'wardrobe',name:'옷장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){drawIsoBox(cx,fx,fy,64,32,64,'#B8956A','#A07850','#8A6540','rgba(0,0,0,0.1)');drawIsoBox(cx,fx,fy-64,64,32,3,'#C8A87A','#B09060','#987A4A')}},
-{id:'table',name:'탁자',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-10,6,6,18,'#B09068','#9A7A52','#846A3E');drawIsoBox(cx,fx,fy-18,32,32,4,'#DCC8A8','#C6B292','#B09C7C','rgba(0,0,0,0.06)')}},
-{id:'fridge',name:'냉장고',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy,32,32,60,'#FFE8F0','#F8D8E0','#E8C0C8','rgba(0,0,0,0.08)');drawIsoBox(cx,fx,fy-28,30,30,1,'#F0B8C4','#E0A4B0','#D0909C');cx.fillStyle='#D8909C';cx.fillRect(fx-4,fy-44,3,3);cx.fillRect(fx-4,fy-18,3,3)}},
-{id:'computer',name:'컴퓨터',cat:'electronics',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx+2,fy-1,14,22,2,'#D0D0D0','#B8B8B8','#A8A8A8');drawIsoBox(cx,fx,fy-14,4,4,18,'#666','#555','#444');drawIsoBox(cx,fx,fy-36,22,22,22,'#4A4A4A','#3A3A3A','#2A2A2A','rgba(0,0,0,0.15)');drawIsoBox(cx,fx,fy-34,18,18,16,'#4488CC','#3377BB','#2266AA')}},
-{id:'tv',name:'TV',cat:'electronics',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-12,8,8,10,'#555','#444','#333');drawIsoBox(cx,fx,fy-14,26,26,22,'#E86060','#D04848','#B83030','rgba(0,0,0,0.12)');drawIsoBox(cx,fx,fy-16,22,22,16,'#55AADD','#4499CC','#3388BB')}},
-{id:'speaker',name:'스피커',cat:'electronics',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-6,20,20,30,'#555','#444','#383838','rgba(0,0,0,0.1)');cx.fillStyle='#777';cx.beginPath();cx.arc(fx+14,fy-25,6,0,Math.PI*2);cx.fill()}},
-{id:'plant',name:'화분',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-8,16,16,16,'#CD853F','#B87333','#A06020','rgba(0,0,0,0.08)');drawIsoBox(cx,fx,fy-24,14,14,2,'#6B4423','#5A3318','#4A2810');drawIsoBox(cx,fx,fy-26,18,18,10,'#7CB342','#689F38','#558B2F');drawIsoBox(cx,fx-2,fy-36,14,12,8,'#8BC34A','#7CB342','#689F38');drawIsoBox(cx,fx,fy-39,8,8,6,'#9CCC65','#8BC34A','#7CB342')}},
-{id:'lamp',name:'스탠드',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-8,16,16,4,'#777','#666','#555');drawIsoBox(cx,fx,fy-13,3,3,36,'#888','#777','#666');drawIsoBox(cx,fx,fy-42,20,20,16,'#FFE082','#FFCA28','#FFB300','rgba(0,0,0,0.05)');cx.fillStyle='rgba(255,240,180,0.15)';cx.beginPath();cx.arc(fx,fy-36,20,0,Math.PI*2);cx.fill()}},
-{id:'rug',name:'러그',cat:'deco',gw:2,gd:2,draw(cx,fx,fy){drawIsoBox(cx,fx,fy,64,64,2,'#E8A87C','#D49468','#C08054','rgba(0,0,0,0.06)');drawIsoBox(cx,fx,fy-7,44,44,1,'#F0C8A8','#DCB494','#C8A080')}},
-{id:'cushion',name:'쿠션',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-6,20,20,8,'#CE93D8','#BA68C8','#AB47BC','rgba(0,0,0,0.06)')}},
-{id:'frame',name:'액자',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-4,24,24,2,'#B8956A','#A07850','#8A6540');drawIsoBox(cx,fx,fy-10,16,16,18,'#87CEEB','#78BED8','#69AEC8');drawIsoBox(cx,fx,fy-6,20,20,20,null,'#C8A87A','#B09060','rgba(0,0,0,0.12)')}},
-{id:'teddy',name:'곰인형',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){drawIsoBox(cx,fx,fy-4,16,16,14,'#A0826A','#8B6F55','#755A42','rgba(0,0,0,0.08)');drawIsoBox(cx,fx,fy-18,14,14,10,'#B8957A','#A0826A','#886C54');cx.fillStyle='#FAFAFA';cx.fillRect(fx-3,fy-23,2,2);cx.fillRect(fx+2,fy-23,2,2);cx.fillStyle='#2C1810';cx.fillRect(fx-2,fy-22,1,1);cx.fillRect(fx+3,fy-22,1,1);cx.fillStyle='#6B4423';cx.fillRect(fx,fy-19,1,1);cx.fillStyle='#8B6F55';cx.fillRect(fx-6,fy-25,3,3);cx.fillRect(fx+4,fy-25,3,3)}},
+{id:'bookshelf',name:'책장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){
+  // main frame body
+  drawIsoBox(cx,fx,fy,64,32,58,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
+  // shelf lines (horizontal separators on left face)
+  drawIsoBox(cx,fx+1,fy-18,62,30,2,'#A08258','#806540','#604830');
+  drawIsoBox(cx,fx+1,fy-36,62,30,2,'#A08258','#806540','#604830');
+  // books on bottom shelf (varied)
+  drawIsoBox(cx,fx+8,fy-3,6,10,12,'#E53935','#C62828','#B71C1C');
+  drawIsoBox(cx,fx+22,fy-10,6,10,12,'#1E88E5','#1565C0','#0D47A1');
+  drawIsoBox(cx,fx+34,fy-16,6,10,12,'#43A047','#2E7D32','#1B5E20');
+  drawIsoBox(cx,fx+46,fy-22,6,10,10,'#FB8C00','#E65100','#BF360C');
+  drawIsoBox(cx,fx+54,fy-26,6,10,11,'#8E24AA','#6A1B9A','#4A148C');
+  // books on middle shelf
+  drawIsoBox(cx,fx+8,fy-21,6,10,12,'#FFB300','#FF8F00','#E65100');
+  drawIsoBox(cx,fx+22,fy-28,6,10,11,'#F8BBD0','#F06292','#EC407A');
+  drawIsoBox(cx,fx+34,fy-34,6,10,12,'#26C6DA','#00ACC1','#006064');
+  drawIsoBox(cx,fx+50,fy-42,6,10,10,'#7E57C2','#5E35B1','#4527A0');
+  // decoration on top shelf (small plant)
+  drawIsoBox(cx,fx+14,fy-40,5,5,6,'#D7572F','#BF360C','#8B2500');
+  drawIsoBox(cx,fx+14,fy-46,6,6,4,'#66BB6A','#43A047','#2E7D32');
+  // frame on top shelf
+  drawIsoBox(cx,fx+36,fy-46,6,10,8,'#D7CCC8','#BCAAA4','#8D6E63');
+}},
+{id:'sofa',name:'소파',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
+  // base frame (bottom)
+  drawIsoBox(cx,fx,fy,32,64,10,'#6B8F85','#5B7F75','#4A6E65','rgba(0,0,0,0.15)');
+  // main seat cushion
+  drawIsoBox(cx,fx,fy-10,30,62,6,'#88C8B8','#78B8A8','#68A898','rgba(0,0,0,0.08)');
+  // backrest
+  drawIsoBox(cx,fx-58,fy-28,28,4,16,'#98D8C8','#80C8B0','#70B8A0','rgba(0,0,0,0.1)');
+  // left armrest (at head end)
+  drawIsoBox(cx,fx-58,fy-16,8,8,12,'#90D0C0','#78C0A8','#68B098');
+  // right armrest (at foot end)
+  drawIsoBox(cx,fx-2,fy,8,8,12,'#90D0C0','#78C0A8','#68B098');
+  // two seat cushions (separated)
+  drawIsoBox(cx,fx-18,fy-16,14,20,3,'#A8E0D0','#88C8B8','#78B8A8');
+  drawIsoBox(cx,fx-42,fy-28,14,20,3,'#A8E0D0','#88C8B8','#78B8A8');
+  // small throw pillow on right
+  drawIsoBox(cx,fx-12,fy-20,7,7,4,'#F48FB1','#EC407A','#D81B60');
+}},
+{id:'wardrobe',name:'옷장',cat:'furniture',gw:1,gd:2,draw(cx,fx,fy){
+  // main body
+  drawIsoBox(cx,fx,fy,64,32,62,'#8B6F47','#6B5437','#4A3A27','rgba(0,0,0,0.15)');
+  // top decorative trim
+  drawIsoBox(cx,fx,fy-62,64,32,3,'#A08258','#806540','#604830');
+  // left door line (vertical line on left face at midpoint)
+  drawIsoBox(cx,fx+1,fy-2,62,1,58,'#604830','#4A3A27','#3A2A17');
+  // right door line
+  drawIsoBox(cx,fx+1,fy-2,1,30,58,'#604830','#4A3A27','#3A2A17');
+  // door handles (2 brass knobs)
+  drawIsoBox(cx,fx+1,fy-26,1,2,2,'#DAA520','#B8860B','#997307');
+  drawIsoBox(cx,fx+32,fy-42,1,2,2,'#DAA520','#B8860B','#997307');
+  // mirror on door
+  drawIsoBox(cx,fx+2,fy-14,1,24,30,'#E0F0F5','#C5DEE8','#AACADC');
+}},
+{id:'table',name:'탁자',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){
+  // pedestal base (wide disk)
+  drawIsoBox(cx,fx,fy-2,14,14,2,'#8B6F47','#6B5437','#4A3A27');
+  // stem (pedestal pole)
+  drawIsoBox(cx,fx-1,fy-4,4,4,14,'#B09068','#9A7A52','#846A3E');
+  // round table top
+  drawIsoBox(cx,fx,fy-18,28,28,3,'#D4A574','#B8895A','#9A6F44','rgba(0,0,0,0.1)');
+  // decoration: small vase on table
+  drawIsoBox(cx,fx-2,fy-22,5,5,6,'#4FC3F7','#29B6F6','#0288D1');
+  // tiny flower in vase
+  cx.fillStyle='#F48FB1';cx.fillRect(fx-1,fy-30,2,2);cx.fillRect(fx+1,fy-29,2,2);
+  cx.fillStyle='#FFEB3B';cx.fillRect(fx,fy-30,1,1);
+}},
+{id:'fridge',name:'냉장고',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){
+  // main body (tall box)
+  drawIsoBox(cx,fx,fy,28,28,58,'#FAFAFA','#EAEAEA','#D0D0D0','rgba(0,0,0,0.18)');
+  // freezer door separation (across middle)
+  drawIsoBox(cx,fx+1,fy-36,28,1,1,'#AAA','#999','#777');
+  drawIsoBox(cx,fx+1,fy-36,1,28,1,'#AAA','#999','#777');
+  // freezer handle (upper section)
+  drawIsoBox(cx,fx-24,fy-50,1,5,2,'#4A4A4A','#3A3A3A','#2A2A2A');
+  // fridge handle (lower section)
+  drawIsoBox(cx,fx-24,fy-22,1,5,2,'#4A4A4A','#3A3A3A','#2A2A2A');
+  // display panel (small)
+  drawIsoBox(cx,fx-24,fy-54,1,3,2,'#1ABC9C','#0E8A71','#056752');
+  // red magnet dot
+  cx.fillStyle='#E53935';cx.fillRect(fx-20,fy-30,2,2);
+  cx.fillStyle='#FDD835';cx.fillRect(fx-14,fy-32,2,2);
+}},
+{id:'computer',name:'컴퓨터',cat:'electronics',gw:1,gd:1,draw(cx,fx,fy){
+  // keyboard (flat, in front)
+  drawIsoBox(cx,fx+4,fy-2,10,22,2,'#CECECE','#B0B0B0','#909090','rgba(0,0,0,0.15)');
+  // keyboard keys (small dots)
+  cx.fillStyle='#808080';
+  for(let i=0;i<3;i++)for(let j=0;j<5;j++)cx.fillRect(fx+6-i*3,fy-2-i*1.5-j*3,1,1);
+  // monitor base (wide flat)
+  drawIsoBox(cx,fx-6,fy-18,10,10,2,'#555','#444','#333');
+  // monitor stand (thin pole)
+  drawIsoBox(cx,fx-6,fy-20,2,2,8,'#666','#555','#444');
+  // monitor frame (thick tall)
+  drawIsoBox(cx,fx-6,fy-28,3,22,18,'#1A1A1A','#111','#000','rgba(0,0,0,0.3)');
+  // screen (inner bright display)
+  drawIsoBox(cx,fx-7,fy-30,1,20,16,'#5ABFE8','#4AB0D8','#3AA0C8');
+  // screen glow (tiny highlight)
+  cx.fillStyle='rgba(255,255,255,0.3)';cx.fillRect(fx-16,fy-42,3,3);
+}},
+{id:'tv',name:'TV',cat:'electronics',gw:1,gd:1,draw(cx,fx,fy){
+  // stand (wide low base)
+  drawIsoBox(cx,fx,fy-2,8,24,2,'#3A3A3A','#2A2A2A','#1A1A1A','rgba(0,0,0,0.2)');
+  // stand pole (mid)
+  drawIsoBox(cx,fx-1,fy-4,3,3,4,'#555','#444','#333');
+  // TV screen frame (thick black border)
+  drawIsoBox(cx,fx-1,fy-8,4,28,18,'#1A1A1A','#111','#000','rgba(0,0,0,0.3)');
+  // TV display (wide color screen)
+  drawIsoBox(cx,fx-2,fy-10,2,25,15,'#5ABFE8','#4AB0D8','#3AA0C8');
+  // TV brand mark (small dot)
+  cx.fillStyle='#F44336';cx.fillRect(fx-2,fy-10,2,1);
+  // display glow highlight
+  cx.fillStyle='rgba(255,255,255,0.25)';cx.fillRect(fx-20,fy-22,4,2);
+}},
+{id:'speaker',name:'스피커',cat:'electronics',gw:1,gd:1,draw(cx,fx,fy){
+  // speaker tower (tall cabinet)
+  drawIsoBox(cx,fx-1,fy-2,16,16,36,'#2A2A2A','#1A1A1A','#0A0A0A','rgba(0,0,0,0.2)');
+  // tweeter (small speaker top)
+  cx.fillStyle='#444';cx.beginPath();cx.arc(fx-10,fy-32,4,0,Math.PI*2);cx.fill();
+  cx.fillStyle='#1A1A1A';cx.beginPath();cx.arc(fx-10,fy-32,2.5,0,Math.PI*2);cx.fill();
+  cx.fillStyle='#666';cx.beginPath();cx.arc(fx-10,fy-32,1,0,Math.PI*2);cx.fill();
+  // mid speaker
+  cx.fillStyle='#333';cx.beginPath();cx.arc(fx-10,fy-22,3,0,Math.PI*2);cx.fill();
+  // woofer (large bottom speaker)
+  cx.fillStyle='#555';cx.beginPath();cx.arc(fx-10,fy-11,5,0,Math.PI*2);cx.fill();
+  cx.fillStyle='#1A1A1A';cx.beginPath();cx.arc(fx-10,fy-11,3.5,0,Math.PI*2);cx.fill();
+  cx.fillStyle='#777';cx.beginPath();cx.arc(fx-10,fy-11,1.5,0,Math.PI*2);cx.fill();
+  // LED indicator
+  cx.fillStyle='#4CAF50';cx.fillRect(fx-3,fy-36,1,1);
+}},
+{id:'plant',name:'화분',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){
+  // pot (terracotta, tapered)
+  drawIsoBox(cx,fx,fy-2,14,14,14,'#CD7F3F','#A86832','#8C5424','rgba(0,0,0,0.15)');
+  // pot rim (darker band on top)
+  drawIsoBox(cx,fx,fy-16,13,13,2,'#A86832','#8C5424','#6F401C');
+  // soil (dark surface)
+  drawIsoBox(cx,fx,fy-18,11,11,1,'#3E2A1F','#2E1D14','#1E1008');
+  // main leaf clusters (bushy)
+  drawIsoBox(cx,fx-1,fy-20,12,12,6,'#558B2F','#33691E','#1B5E20');
+  drawIsoBox(cx,fx+2,fy-24,10,10,6,'#7CB342','#558B2F','#33691E');
+  drawIsoBox(cx,fx-3,fy-26,8,10,5,'#8BC34A','#7CB342','#558B2F');
+  drawIsoBox(cx,fx+1,fy-30,8,8,5,'#9CCC65','#8BC34A','#7CB342');
+  // leaf tips (pointy top)
+  cx.fillStyle='#7CB342';
+  cx.fillRect(fx-1,fy-36,2,2);cx.fillRect(fx-4,fy-34,2,2);cx.fillRect(fx+3,fy-34,2,2);
+  cx.fillRect(fx-2,fy-38,1,2);cx.fillRect(fx+2,fy-37,1,2);
+  // tiny flower accent
+  cx.fillStyle='#F48FB1';cx.fillRect(fx+2,fy-32,2,2);
+  cx.fillStyle='#FFEB3B';cx.fillRect(fx+3,fy-31,1,1);
+}},
+{id:'lamp',name:'스탠드',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){
+  // base (wide flat disk)
+  drawIsoBox(cx,fx,fy-2,14,14,3,'#3A3A3A','#2A2A2A','#1A1A1A','rgba(0,0,0,0.2)');
+  // stem bottom (thicker)
+  drawIsoBox(cx,fx-1,fy-5,3,3,4,'#888','#666','#444');
+  // stem (tall thin)
+  drawIsoBox(cx,fx-1,fy-9,2,2,26,'#AAA','#888','#666');
+  // stem top connector
+  drawIsoBox(cx,fx-2,fy-35,4,4,2,'#888','#666','#444');
+  // lampshade (wide inverted trapezoid, use larger box)
+  drawIsoBox(cx,fx,fy-37,18,18,4,'#FFD54F','#FFB300','#FF8F00','rgba(0,0,0,0.1)');
+  // lampshade top (narrower)
+  drawIsoBox(cx,fx,fy-41,16,16,4,'#FFE082','#FFCA28','#FFB300');
+  drawIsoBox(cx,fx,fy-45,12,12,2,'#FFECB3','#FFE082','#FFCA28');
+  // light glow aura
+  cx.fillStyle='rgba(255,230,140,0.25)';cx.beginPath();cx.arc(fx-2,fy-40,20,0,Math.PI*2);cx.fill();
+  cx.fillStyle='rgba(255,240,180,0.15)';cx.beginPath();cx.arc(fx-2,fy-40,30,0,Math.PI*2);cx.fill();
+}},
+{id:'rug',name:'러그',cat:'deco',gw:2,gd:2,draw(cx,fx,fy){
+  // base rug (large flat)
+  drawIsoBox(cx,fx,fy,64,64,1,'#D88A60','#B8744C','#9A5E38','rgba(0,0,0,0.12)');
+  // inner pattern layer
+  drawIsoBox(cx,fx,fy-1,48,48,1,'#F0C8A8','#DCB494','#C8A080');
+  // innermost accent
+  drawIsoBox(cx,fx,fy-2,28,28,1,'#D88A60','#B8744C','#9A5E38');
+  // tassels (dots at corners of rug edge)
+  cx.fillStyle='#8B6F47';
+  cx.fillRect(fx+30,fy-14,2,2);cx.fillRect(fx-32,fy-30,2,2);
+  cx.fillRect(fx-2,fy+30,2,2);cx.fillRect(fx-2,fy-46,2,2);
+}},
+{id:'cushion',name:'쿠션',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){
+  // main cushion body
+  drawIsoBox(cx,fx,fy-4,18,18,7,'#CE93D8','#BA68C8','#AB47BC','rgba(0,0,0,0.15)');
+  // button/tuft in center
+  cx.fillStyle='#8E24AA';cx.fillRect(fx-1,fy-11,2,2);
+  // stitching around edges (small dots)
+  cx.fillStyle='rgba(142,36,170,0.5)';
+  cx.fillRect(fx+8,fy-4,1,1);cx.fillRect(fx-9,fy-14,1,1);
+  cx.fillRect(fx+8,fy-14,1,1);cx.fillRect(fx-9,fy-4,1,1);
+  // highlight
+  cx.fillStyle='rgba(255,255,255,0.2)';
+  cx.fillRect(fx-4,fy-11,3,1);
+}},
+{id:'frame',name:'액자',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){
+  // frame base/stand (small shelf it sits on)
+  drawIsoBox(cx,fx,fy-2,8,8,2,'#6B5437','#5A3718','#3A2515');
+  // frame outer (wood frame, flat on left face)
+  drawIsoBox(cx,fx+3,fy-4,3,22,22,'#B8956A','#A07850','#8A6540','rgba(0,0,0,0.15)');
+  // picture inside (sky background)
+  drawIsoBox(cx,fx+2,fy-6,1,18,18,'#81D4FA','#64B5F6','#42A5F5');
+  // mountain shape in picture
+  cx.fillStyle='#5E7A9B';
+  cx.fillRect(fx+2,fy-12,1,1);cx.fillRect(fx+2,fy-13,1,2);cx.fillRect(fx+2,fy-14,1,3);
+  cx.fillRect(fx+2,fy-15,1,2);cx.fillRect(fx+2,fy-16,1,3);
+  // sun
+  cx.fillStyle='#FFEB3B';cx.fillRect(fx+2,fy-20,1,2);
+  // ground
+  cx.fillStyle='#4CAF50';cx.fillRect(fx+2,fy-10,1,1);
+}},
+{id:'teddy',name:'곰인형',cat:'deco',gw:1,gd:1,draw(cx,fx,fy){
+  // body (sitting, lower portion)
+  drawIsoBox(cx,fx,fy-2,14,14,10,'#8B6F55','#755A42','#604630','rgba(0,0,0,0.15)');
+  // belly (lighter)
+  drawIsoBox(cx,fx-1,fy-4,10,10,6,'#B89570','#9A7A52','#846A3E');
+  // head (round, on top)
+  drawIsoBox(cx,fx,fy-14,12,12,10,'#A08266','#8B6F55','#755A42','rgba(0,0,0,0.15)');
+  // ears (left and right on top)
+  drawIsoBox(cx,fx-7,fy-22,4,4,4,'#8B6F55','#755A42','#604630');
+  drawIsoBox(cx,fx+4,fy-22,4,4,4,'#8B6F55','#755A42','#604630');
+  // ear pink centers
+  cx.fillStyle='#FFB8C0';
+  cx.fillRect(fx-5,fy-19,2,2);cx.fillRect(fx+5,fy-19,2,2);
+  // snout (lighter oval)
+  cx.fillStyle='#D4B896';cx.fillRect(fx-3,fy-16,6,3);
+  // nose (black triangle)
+  cx.fillStyle='#2C1810';
+  cx.fillRect(fx-1,fy-16,2,1);cx.fillRect(fx,fy-15,1,1);
+  // eyes (two black beads with white highlight)
+  cx.fillStyle='#2C1810';
+  cx.fillRect(fx-4,fy-20,2,2);cx.fillRect(fx+2,fy-20,2,2);
+  cx.fillStyle='#FFF';cx.fillRect(fx-3,fy-20,1,1);cx.fillRect(fx+3,fy-20,1,1);
+  // mouth (small curve)
+  cx.fillStyle='#2C1810';cx.fillRect(fx-1,fy-13,2,1);cx.fillRect(fx-2,fy-14,1,1);cx.fillRect(fx+1,fy-14,1,1);
+  // bow tie
+  cx.fillStyle='#F06292';cx.fillRect(fx-3,fy-10,6,2);
+  cx.fillStyle='#EC407A';cx.fillRect(fx-1,fy-11,2,1);
+}},
 {id:'minime',name:'미니미',cat:'character',gw:1,gd:1,draw(cx,fx,fy){drawCharSprite(cx,fx,fy-TH/2+8)}},
 {id:'cat',name:'고양이',cat:'character',gw:1,gd:1,draw(cx,fx,fy){drawPet(cx,fx,fy-TH/2+6,'cat')}},
 {id:'dog',name:'강아지',cat:'character',gw:1,gd:1,draw(cx,fx,fy){drawPet(cx,fx,fy-TH/2+6,'dog')}},
