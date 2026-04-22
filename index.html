@@ -420,9 +420,11 @@ body{
     #info-text{font-size:12px;width:100%;text-align:center;order:10}
     #item-actions{width:100%;order:10;justify-content:center}
     .stab{padding:8px 10px;font-size:13px}
-    .item-card{width:84px}
-    .item-card .thumb{width:68px;height:54px}
-    .item-card .iname{font-size:11px}
+    /* Shop grid: exact 4-column grid to fill width without side gutters */
+    #shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:5px}
+    .item-card{width:auto;min-width:0;padding:6px 3px;gap:2px}
+    .item-card .thumb{width:100%;height:auto;aspect-ratio:1/1;max-height:64px}
+    .item-card .iname{font-size:10px;word-break:keep-all}
     #stat-bars{gap:5px 12px;padding:8px 10px}
     .stat-row{flex:1 1 150px;font-size:12px}
     .stat-row .sname{width:48px}
