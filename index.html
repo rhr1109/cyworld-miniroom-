@@ -770,15 +770,18 @@ const ASSETS=[
   drawIsoBox(cx,fx-47,fy-41,20,6,1,'#FFD5DF','#FFC0CD','#FFABBB');
 }},
 {id:'desk',name:'책상',cat:'furniture',gw:2,gd:1,draw(cx,fx,fy){
-  // 4 legs (back-left, back-right, front-left, front-right)
-  drawIsoBox(cx,fx-58,fy-30,3,3,20,'#8B6F47','#6B5437','#4A3A27');
-  drawIsoBox(cx,fx+28,fy-14,3,3,20,'#8B6F47','#6B5437','#4A3A27');
-  drawIsoBox(cx,fx-30,fy-46,3,3,20,'#8B6F47','#6B5437','#4A3A27');
-  drawIsoBox(cx,fx,fy-2,3,3,20,'#8B6F47','#6B5437','#4A3A27');
-  // desk top surface
-  drawIsoBox(cx,fx,fy-20,30,62,4,'#D4A574','#B8895A','#9A6F44','rgba(0,0,0,0.12)');
-  // front apron (below desk top, visible strip)
-  drawIsoBox(cx,fx,fy-4,2,60,4,'#B8895A','#9A6F44','#7A5438');
+  // 3 back legs first for z-order
+  drawIsoBox(cx,fx-30,fy-44,3,3,18,'#8B6F47','#6B5437','#4A3A27');
+  drawIsoBox(cx,fx+28,fy-14,3,3,18,'#8B6F47','#6B5437','#4A3A27');
+  drawIsoBox(cx,fx-58,fy-28,3,3,18,'#8B6F47','#6B5437','#4A3A27');
+  // desk top
+  drawIsoBox(cx,fx,fy-18,30,60,4,'#D4A574','#B8895A','#9A6F44','rgba(0,0,0,0.12)');
+  // front apron / drawer fascia (hangs under desk top front edge)
+  drawIsoBox(cx,fx-1,fy-13,2,56,5,'#B8895A','#9A6F44','#7A5438');
+  // drawer pull (small dark handle on apron)
+  cx.fillStyle='#5D4020';cx.fillRect(fx-20,fy-22,3,2);
+  // front leg last
+  drawIsoBox(cx,fx,fy,3,3,18,'#8B6F47','#6B5437','#4A3A27');
 }},
 {id:'chair',name:'의자',cat:'furniture',gw:1,gd:1,draw(cx,fx,fy){
   // 4 legs at tile corners (tile is 24x24, seat slightly smaller 22x22)
